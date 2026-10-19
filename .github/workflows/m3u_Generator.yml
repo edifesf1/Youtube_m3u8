@@ -1,0 +1,41 @@
+name: M3U Generator
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 */3 * * *'  # Atualiza a cada 3 horas
+  workflow_dispatch:
+
+permissions:
+  contents: write  # ✅ Permite o bot fazer commit
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4
+
+      - name: Rodar o gerador
+        run: |
+          chmod +x autorun.sh
+          ./autorun.sh
+
+      - name: Atualizar playlist
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add youtube.m3u
+          git commit -m "links atualizados" || echo "Sem alterações"
+          git push
