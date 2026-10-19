@@ -2,3 +2,4 @@ Globo,https://www.youtube.com/@Globo/live
 CNN Brasil,https://www.youtube.com/@CNNbrasil/live
 SBT,https://www.youtube.com/@SBT/live
 Record,https://www.youtube.com/@RecordTV/live
+As Gemeas,https://www.youtube.com/watch?v=dSFkxQc4_3k
