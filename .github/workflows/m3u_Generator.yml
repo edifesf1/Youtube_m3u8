@@ -14,18 +14,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Baixar código
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Instalar dependências
         run: |
           python3 -m pip install --upgrade pip
-          pip install yt-dlp
+          pip install yt-dlp requests
 
-      - name: Rodar gerador
+      - name: Atualizar yt-dlp para versão mais recente
+        run: pip install --upgrade yt-dlp
+
+      - name: Gerar playlist
         run: python3 scripts/generate_m3u.py
 
-      - name: Atualizar playlist
+      - name: Salvar alterações
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
