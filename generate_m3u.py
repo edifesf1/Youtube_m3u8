@@ -1,39 +1,48 @@
 
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent
-INPUT_FILE = BASE_DIR / "youtube.txt"
-OUTPUT_FILE = BASE_DIR / "youtube.m3u"
+BASE = Path(__file__).resolve().parent
+INPUT = BASE / "youtube.txt"
+OUTPUT = BASE / "youtube.m3u"
 
 
-def generate_m3u():
-    if not INPUT_FILE.exists():
-        INPUT_FILE.write_text("", encoding="utf-8")
+def generate():
+    entries = ["#EXTM3U"]
 
-    links = [
-        line.strip()
-        for line in INPUT_FILE.read_text(encoding="utf-8").splitlines()
-        if line.strip() and not line.strip().startswith("#")
-    ]
+    if not INPUT.exists():
+        raise FileNotFoundError("Arquivo youtube.txt não encontrado")
 
-    lines = ["#EXTM3U"]
+    for line in INPUT.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
 
-    for index, url in enumerate(links, start=1):
-        if not url.startswith(("https://", "http://")):
-            print(f"Link ignorado: {url}")
+        if not line or line.startswith("#"):
             continue
 
-        lines.append(f"#EXTINF:-1,YouTube {index}")
-        lines.append(url)
+        if "|" not in line:
+            print(f"Linha ignorada: {line}")
+            continue
 
-    OUTPUT_FILE.write_text(
-        "\n".join(lines) + "\n",
+        name, url = (part.strip() for part in line.split("|", 1))
+
+        if not name or not url.startswith("https://"):
+            print(f"Entrada inválida: {line}")
+            continue
+
+        if ".m3u8" not in url.split("?", 1)[0].lower():
+            print(f"Aviso: URL sem extensão .m3u8: {name}")
+
+        entries.extend([
+            f"#EXTINF:-1,{name}",
+            url
+        ])
+
+    OUTPUT.write_text(
+        "\n".join(entries) + "\n",
         encoding="utf-8"
     )
 
-    print(f"Playlist criada: {OUTPUT_FILE}")
-    print(f"Links processados: {len(lines[1:]) // 2}")
+    print(f"Playlist criada: {OUTPUT}")
 
 
 if __name__ == "__main__":
-    generate_m3u()
+    generate()
