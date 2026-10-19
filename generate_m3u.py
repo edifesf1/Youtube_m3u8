@@ -2,47 +2,47 @@
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
-INPUT = BASE / "youtube.txt"
-OUTPUT = BASE / "youtube.m3u"
+ARQUIVO_ENTRADA = BASE / "youtube.txt"
+ARQUIVO_SAIDA = BASE / "youtube.m3u"
 
 
-def generate():
-    entries = ["#EXTM3U"]
+def gerar_playlist():
+    if not ARQUIVO_ENTRADA.exists():
+        raise FileNotFoundError("Crie o arquivo youtube.txt primeiro.")
 
-    if not INPUT.exists():
-        raise FileNotFoundError("Arquivo youtube.txt não encontrado")
+    linhas = ["#EXTM3U"]
+    total = 0
 
-    for line in INPUT.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
+    for linha in ARQUIVO_ENTRADA.read_text(
+        encoding="utf-8"
+    ).splitlines():
+        linha = linha.strip()
 
-        if not line or line.startswith("#"):
+        if not linha or linha.startswith("#"):
             continue
 
-        if "|" not in line:
-            print(f"Linha ignorada: {line}")
+        if "|" in linha:
+            nome, url = linha.split("|", 1)
+            nome, url = nome.strip(), url.strip()
+        else:
+            nome, url = f"YouTube {total + 1}", linha
+
+        if not url.startswith("https://"):
+            print(f"Link ignorado: {url}")
             continue
 
-        name, url = (part.strip() for part in line.split("|", 1))
+        linhas.append(f"#EXTINF:-1,{nome}")
+        linhas.append(url)
+        total += 1
 
-        if not name or not url.startswith("https://"):
-            print(f"Entrada inválida: {line}")
-            continue
-
-        if ".m3u8" not in url.split("?", 1)[0].lower():
-            print(f"Aviso: URL sem extensão .m3u8: {name}")
-
-        entries.extend([
-            f"#EXTINF:-1,{name}",
-            url
-        ])
-
-    OUTPUT.write_text(
-        "\n".join(entries) + "\n",
+    ARQUIVO_SAIDA.write_text(
+        "\n".join(linhas) + "\n",
         encoding="utf-8"
     )
 
-    print(f"Playlist criada: {OUTPUT}")
+    print(f"Playlist criada: {ARQUIVO_SAIDA}")
+    print(f"Entradas: {total}")
 
 
 if __name__ == "__main__":
-    generate()
+    gerar_playlist()
