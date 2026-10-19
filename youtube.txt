@@ -1,0 +1,7 @@
+
+# Um link do YouTube por linha
+# Aceita videos publicos e lives publicas
+# Linhas iniciadas com # sao ignoradas
+
+# https://www.youtube.com/watch?v=COLOQUE_O_ID_DO_VIDEO
+https://www.youtube.com/watch?v=esh6wXrLJ2s
