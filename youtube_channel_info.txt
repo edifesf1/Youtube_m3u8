@@ -1,0 +1,4 @@
+# Coloque aqui os canais que você quer
+# Formato: Nome_do_canal, URL_do_canal
+Globo,https://www.youtube.com/@Globo/live
+CNN Brasil,https://www.youtube.com/@CNNbrasil/live
