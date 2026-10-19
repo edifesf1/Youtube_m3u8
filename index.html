@@ -1,240 +1,99 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
   <title>Youtube IPTV</title>
-
   <style>
-    * { box-sizing: border-box; }
-
     body {
       margin: 0;
       background: #111;
-      color: #fff;
+      color: white;
       font-family: Arial, sans-serif;
     }
-
     header {
+      padding: 16px;
       background: #c00;
-      padding: 16px 20px;
       font-size: 22px;
       font-weight: bold;
     }
-
     main {
       max-width: 1000px;
       margin: auto;
       padding: 16px;
     }
-
     #player {
       width: 100%;
       aspect-ratio: 16 / 9;
       background: #000;
     }
-
     #player iframe {
       width: 100%;
       height: 100%;
+      border: 0;
     }
-
-    #status {
-      padding: 12px 0;
-      color: #ccc;
-    }
-
     #lista {
       display: grid;
       gap: 8px;
+      margin-top: 16px;
     }
-
-    #lista button {
-      width: 100%;
-      padding: 15px;
+    button {
+      padding: 14px;
       text-align: left;
-      color: white;
       background: #292929;
+      color: white;
       border: 1px solid #444;
       border-radius: 6px;
       font-size: 16px;
-      cursor: pointer;
     }
-
-    #lista button:focus,
-    #lista button.ativo {
-      border-color: #f44;
-      background: #383030;
-      outline: 2px solid #c00;
+    button:focus {
+      outline: 2px solid #f44;
     }
   </style>
 </head>
-
 <body>
   <header>Youtube IPTV</header>
 
   <main>
     <div id="player"></div>
-    <div id="status">Carregando lista de vídeos...</div>
     <div id="lista"></div>
   </main>
 
+  <script src="videos.js"></script>
   <script>
-    let videos = [];
-    let player = null;
-    let apiPronta = false;
+    let player;
     let selecionado = 0;
 
-    const status = document.getElementById("status");
     const lista = document.getElementById("lista");
 
-    function extrairId(valor) {
-      try {
-        const url = new URL(valor);
+    videos.forEach((video, index) => {
+      const botao = document.createElement("button");
+      botao.textContent = `${index + 1}. ${video.titulo}`;
 
-        if (url.hostname === "youtu.be") {
-          return url.pathname.split("/").filter(Boolean)[0] || null;
+      botao.onclick = () => {
+        selecionado = index;
+        if (player && player.loadVideoById) {
+          player.loadVideoById(video.id);
         }
-
-        if (
-          !["youtube.com", "www.youtube.com",
-            "m.youtube.com", "youtube-nocookie.com",
-            "www.youtube-nocookie.com"].includes(url.hostname)
-        ) {
-          return null;
-        }
-
-        if (url.pathname === "/watch") {
-          return url.searchParams.get("v");
-        }
-
-        const partes = url.pathname.split("/").filter(Boolean);
-
-        if (["embed", "shorts", "live", "v"].includes(partes[0])) {
-          return partes[1] || null;
-        }
-
-        return null;
-      } catch {
-        return null;
-      }
-    }
-
-    function carregarPlayerAPI() {
-      window.onYouTubeIframeAPIReady = function () {
-        apiPronta = true;
-
-        if (!videos.length) return;
-
-        player = new YT.Player("player", {
-          videoId: videos[selecionado].id,
-          playerVars: {
-            playsinline: 1,
-            rel: 0
-          },
-          events: {
-            onReady: () => {
-              status.textContent =
-                "Lista carregada: " + videos.length + " vídeo(s).";
-            },
-            onError: () => {
-              status.textContent =
-                "Não foi possível reproduzir este vídeo. " +
-                "Ele pode bloquear a incorporação.";
-            }
-          }
-        });
       };
 
-      const script = document.createElement("script");
-      script.src = "https://www.youtube.com/iframe_api";
-      script.onerror = () => {
-        status.textContent = "Não foi possível carregar o player do YouTube.";
-      };
-      document.head.appendChild(script);
-    }
+      lista.appendChild(botao);
+    });
 
-    function selecionarVideo(index) {
-      selecionado = index;
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
 
-      [...lista.children].forEach((botao, i) => {
-        botao.classList.toggle("ativo", i === index);
-      });
-
-      if (player && apiPronta) {
-        player.loadVideoById(videos[index].id);
-      }
-    }
-
-    function montarLista() {
-      lista.replaceChildren();
-
-      videos.forEach((video, index) => {
-        const botao = document.createElement("button");
-        botao.textContent = `${index + 1}. ${video.titulo}`;
-
-        botao.addEventListener("click", () => {
-          selecionarVideo(index);
-        });
-
-        lista.appendChild(botao);
-      });
-
-      if (videos.length) {
-        selecionarVideo(0);
-        carregarPlayerAPI();
-      } else {
-        status.textContent =
-          "Nenhum vídeo válido encontrado em youtube.txt.";
-      }
-    }
-
-    async function carregarLista() {
-      try {
-        const resposta = await fetch(
-          "./youtube.txt?v=" + Date.now(),
-          { cache: "no-store" }
-        );
-
-        if (!resposta.ok) {
-          throw new Error("HTTP " + resposta.status);
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player("player", {
+        videoId: videos[selecionado]?.id || "",
+        playerVars: {
+          playsinline: 1
         }
-
-        const texto = await resposta.text();
-
-        videos = texto.split(/\r?\n/)
-          .map(linha => linha.trim())
-          .filter(linha => linha && !linha.startsWith("#"))
-          .map(linha => {
-            const separador = linha.indexOf("|");
-
-            const titulo = separador >= 0
-              ? linha.slice(0, separador).trim()
-              : "";
-
-            const url = separador >= 0
-              ? linha.slice(separador + 1).trim()
-              : linha;
-
-            const id = extrairId(url);
-
-            return id ? {
-              titulo: titulo || "Vídeo " + (videos.length + 1),
-              id
-            } : null;
-          })
-          .filter(Boolean);
-
-        montarLista();
-      } catch (erro) {
-        console.error(erro);
-        status.textContent =
-          "Erro ao ler youtube.txt. Verifique se o arquivo " +
-          "está publicado no GitHub Pages.";
-      }
+      });
     }
-
-    carregarLista();
   </script>
 </body>
 </html>
