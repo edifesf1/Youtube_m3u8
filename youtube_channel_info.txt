@@ -1,5 +1,4 @@
-Globo,https://www.youtube.com/@Globo/live
 CNN Brasil,https://www.youtube.com/@CNNbrasil/live
+Globo,https://www.youtube.com/@Globo/live
 SBT,https://www.youtube.com/@SBT/live
 Record,https://www.youtube.com/@RecordTV/live
-Jovem Pan,https://www.youtube.com/@JovemPanNews/live
