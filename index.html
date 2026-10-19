@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+  <title>Youtube IPTV</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      padding: 16px;
+      background: #c00;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    main {
+      max-width: 1000px;
+      margin: auto;
+      padding: 16px;
+    }
+    #player {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+    #player iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    #lista {
+      display: grid;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    button {
+      padding: 14px;
+      text-align: left;
+      background: #292929;
+      color: white;
+      border: 1px solid #444;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    button:focus {
+      outline: 2px solid #f44;
+    }
+  </style>
+</head>
+<body>
+  <header>Youtube IPTV</header>
+
+  <main>
+    <div id="player"></div>
+    <div id="lista"></div>
+  </main>
+
+  <script src="videos.js"></script>
+  <script>
+    let player;
+    let selecionado = 0;
+
+    const lista = document.getElementById("lista");
+
+    videos.forEach((video, index) => {
+      const botao = document.createElement("button");
+      botao.textContent = `${index + 1}. ${video.titulo}`;
+
+      botao.onclick = () => {
+        selecionado = index;
+        if (player && player.loadVideoById) {
+          player.loadVideoById(video.id);
+        }
+      };
+
+      lista.appendChild(botao);
+    });
+
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player("player", {
+        videoId: videos[selecionado]?.id || "",
+        playerVars: {
+          playsinline: 1
+        }
+      });
+    }
+  </script>
+</body>
+</html>
