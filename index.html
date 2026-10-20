@@ -1,78 +1,86 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Youtube IPTV</title>
-
   <style>
     * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-    }
-
+    body { margin: 0; background: #111; color: #fff; font-family: Arial, sans-serif; }
     header {
-      background: #c00;
-      padding: 16px 20px;
-      font-size: 22px;
-      font-weight: bold;
+      display: flex; align-items: center; gap: 14px;
+      background: #c00; padding: 12px 16px; min-height: 60px;
+      position: sticky; top: 0; z-index: 5;
     }
-
-    main {
-      max-width: 1000px;
-      margin: auto;
-      padding: 16px;
+    #menuBtn {
+      border: 0; background: transparent; color: white; cursor: pointer;
+      font-size: 30px; line-height: 1; padding: 3px 8px; border-radius: 5px;
     }
-
-    #player {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: #000;
-    }
-
-    #player iframe {
-      width: 100%;
-      height: 100%;
-    }
-
-    #status {
-      padding: 12px 0;
-      color: #ccc;
-    }
-
-    #lista {
-      display: grid;
-      gap: 8px;
-    }
-
+    #menuBtn:hover { background: rgba(255,255,255,.15); }
+    #siteTitle { font-size: 22px; font-weight: bold; }
+    #temaAtual { margin-left: auto; font-size: 14px; font-weight: normal; }
+    main { max-width: 1000px; margin: auto; padding: 16px; }
+    #player { width: 100%; aspect-ratio: 16 / 9; background: #000; }
+    #player iframe { width: 100%; height: 100%; border: 0; }
+    #status { padding: 12px 0; color: #ccc; }
+    #lista { display: grid; gap: 8px; }
     #lista button {
-      width: 100%;
-      padding: 15px;
-      text-align: left;
-      color: white;
-      background: #292929;
-      border: 1px solid #444;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
+      width: 100%; padding: 15px; text-align: left; color: white;
+      background: #292929; border: 1px solid #444; border-radius: 6px;
+      font-size: 16px; cursor: pointer;
     }
-
-    #lista button:focus,
-    #lista button.ativo {
-      border-color: #f44;
-      background: #383030;
-      outline: 2px solid #c00;
+    #lista button:focus, #lista button.ativo {
+      border-color: #f44; background: #383030; outline: 2px solid #c00;
+    }
+    #drawerOverlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.65);
+      z-index: 9; display: none;
+    }
+    #drawerOverlay.aberto { display: block; }
+    #drawer {
+      width: min(320px, 86vw); height: 100%; overflow-y: auto;
+      background: #1b1b1b; box-shadow: 4px 0 16px rgba(0,0,0,.4);
+      padding: 0 0 20px;
+    }
+    .drawerHeader {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #c00; padding: 17px 16px; font-size: 20px; font-weight: bold;
+    }
+    #closeMenu {
+      border: 0; color: #fff; background: transparent; font-size: 28px; cursor: pointer;
+    }
+    .menuIntro { color: #bbb; font-size: 13px; padding: 15px 16px 8px; }
+    #temasMenu { display: grid; }
+    #temasMenu button {
+      background: transparent; border: 0; color: #eee; text-align: left;
+      padding: 14px 18px; font-size: 16px; cursor: pointer;
+      border-bottom: 1px solid #333;
+    }
+    #temasMenu button:hover, #temasMenu button.ativo { background: #383030; color: #fff; border-left: 4px solid #f33; }
+    @media (max-width: 600px) {
+      #siteTitle { font-size: 19px; }
+      #temaAtual { font-size: 12px; }
+      main { padding: 10px; }
     }
   </style>
 </head>
-
 <body>
-  <header>Youtube IPTV</header>
+  <header>
+    <button id="menuBtn" aria-label="Abrir menu de temas" aria-expanded="false">☰</button>
+    <div id="siteTitle">Youtube IPTV</div>
+    <div id="temaAtual">Todos os temas</div>
+  </header>
+
+  <div id="drawerOverlay" aria-hidden="true">
+    <nav id="drawer" aria-label="Menu de temas">
+      <div class="drawerHeader">
+        <span>Temas</span>
+        <button id="closeMenu" aria-label="Fechar menu">×</button>
+      </div>
+      <div class="menuIntro">Escolha uma categoria para ver seus vídeos.</div>
+      <div id="temasMenu"></div>
+    </nav>
+  </div>
 
   <main>
     <div id="player"></div>
@@ -81,6 +89,7 @@
   </main>
 
   <script>
+    let todosVideos = [];
     let videos = [];
     let player = null;
     let apiPronta = false;
@@ -88,150 +97,191 @@
 
     const status = document.getElementById("status");
     const lista = document.getElementById("lista");
+    const temasMenu = document.getElementById("temasMenu");
+    const temaAtual = document.getElementById("temaAtual");
+    const overlay = document.getElementById("drawerOverlay");
+    const menuBtn = document.getElementById("menuBtn");
+
+    function temaDaURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("tema") || "Todos";
+    }
+
+    function abrirMenu() {
+      overlay.classList.add("aberto");
+      overlay.setAttribute("aria-hidden", "false");
+      menuBtn.setAttribute("aria-expanded", "true");
+    }
+
+    function fecharMenu() {
+      overlay.classList.remove("aberto");
+      overlay.setAttribute("aria-hidden", "true");
+      menuBtn.setAttribute("aria-expanded", "false");
+    }
+
+    menuBtn.addEventListener("click", abrirMenu);
+    document.getElementById("closeMenu").addEventListener("click", fecharMenu);
+    overlay.addEventListener("click", event => {
+      if (event.target === overlay) fecharMenu();
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") fecharMenu();
+    });
 
     function extrairId(valor) {
       try {
         const url = new URL(valor);
-
         if (url.hostname === "youtu.be") {
           return url.pathname.split("/").filter(Boolean)[0] || null;
         }
-
-        if (
-          !["youtube.com", "www.youtube.com",
-            "m.youtube.com", "youtube-nocookie.com",
-            "www.youtube-nocookie.com"].includes(url.hostname)
-        ) {
+        if (!["youtube.com", "www.youtube.com", "m.youtube.com",
+              "youtube-nocookie.com", "www.youtube-nocookie.com"].includes(url.hostname)) {
           return null;
         }
-
-        if (url.pathname === "/watch") {
-          return url.searchParams.get("v");
-        }
-
+        if (url.pathname === "/watch") return url.searchParams.get("v");
         const partes = url.pathname.split("/").filter(Boolean);
-
-        if (["embed", "shorts", "live", "v"].includes(partes[0])) {
-          return partes[1] || null;
-        }
-
+        if (["embed", "shorts", "live", "v"].includes(partes[0])) return partes[1] || null;
         return null;
-      } catch {
-        return null;
-      }
+      } catch { return null; }
     }
 
     function carregarPlayerAPI() {
+      if (window.YT && window.YT.Player) {
+        apiPronta = true;
+        criarPlayer();
+        return;
+      }
       window.onYouTubeIframeAPIReady = function () {
         apiPronta = true;
+        criarPlayer();
+      };
+      if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+        const script = document.createElement("script");
+        script.src = "https://www.youtube.com/iframe_api";
+        script.onerror = () => {
+          status.textContent = "Não foi possível carregar o player do YouTube.";
+        };
+        document.head.appendChild(script);
+      }
+    }
 
-        if (!videos.length) return;
-
-        player = new YT.Player("player", {
-          videoId: videos[selecionado].id,
-          playerVars: {
-            playsinline: 1,
-            rel: 0
+    function criarPlayer() {
+      if (!videos.length) return;
+      if (player && typeof player.loadVideoById === "function") {
+        player.loadVideoById(videos[selecionado].id);
+        return;
+      }
+      player = new YT.Player("player", {
+        videoId: videos[selecionado].id,
+        playerVars: { playsinline: 1, rel: 0 },
+        events: {
+          onReady: () => {
+            status.textContent = "Lista carregada: " + videos.length + " vídeo(s).";
           },
-          events: {
-            onReady: () => {
-              status.textContent =
-                "Lista carregada: " + videos.length + " vídeo(s).";
-            },
-            onError: () => {
-              status.textContent =
-                "Não foi possível reproduzir este vídeo. " +
-                "Ele pode bloquear a incorporação.";
-            }
+          onError: () => {
+            status.textContent = "Não foi possível reproduzir este vídeo. Ele pode bloquear a incorporação.";
           }
-        });
-      };
-
-      const script = document.createElement("script");
-      script.src = "https://www.youtube.com/iframe_api";
-      script.onerror = () => {
-        status.textContent = "Não foi possível carregar o player do YouTube.";
-      };
-      document.head.appendChild(script);
+        }
+      });
     }
 
     function selecionarVideo(index) {
       selecionado = index;
+      [...lista.children].forEach((botao, i) => botao.classList.toggle("ativo", i === index));
+      if (player && apiPronta && videos[index]) player.loadVideoById(videos[index].id);
+    }
 
-      [...lista.children].forEach((botao, i) => {
-        botao.classList.toggle("ativo", i === index);
+    function irParaTema(tema) {
+      const url = new URL(window.location.href);
+      if (tema === "Todos") url.searchParams.delete("tema");
+      else url.searchParams.set("tema", tema);
+      window.location.href = url.pathname + url.search + url.hash;
+    }
+
+    function montarMenu() {
+      const temaEscolhido = temaDaURL();
+      const temas = ["Todos", ...new Set(todosVideos.map(v => v.tema))];
+      temasMenu.replaceChildren();
+
+      temas.forEach(tema => {
+        const botao = document.createElement("button");
+        botao.textContent = tema === "Todos" ? "📺  Todos os vídeos" : "▶  " + tema;
+        botao.classList.toggle("ativo", tema === temaEscolhido);
+        botao.addEventListener("click", () => {
+          fecharMenu();
+          if (tema !== temaEscolhido) irParaTema(tema);
+          else fecharMenu();
+        });
+        temasMenu.appendChild(botao);
       });
-
-      if (player && apiPronta) {
-        player.loadVideoById(videos[index].id);
-      }
     }
 
     function montarLista() {
+      const temaEscolhido = temaDaURL();
+      videos = temaEscolhido === "Todos"
+        ? [...todosVideos]
+        : todosVideos.filter(video => video.tema.toLocaleLowerCase() === temaEscolhido.toLocaleLowerCase());
+
+      temaAtual.textContent = temaEscolhido === "Todos" ? "Todos os temas" : temaEscolhido;
       lista.replaceChildren();
+
+      if (!videos.length) {
+        status.textContent = "Não há vídeos neste tema. Confira as categorias em youtube.txt.";
+        if (player && player.stopVideo) player.stopVideo();
+        return;
+      }
 
       videos.forEach((video, index) => {
         const botao = document.createElement("button");
         botao.textContent = `${index + 1}. ${video.titulo}`;
-
-        botao.addEventListener("click", () => {
-          selecionarVideo(index);
-        });
-
+        botao.addEventListener("click", () => selecionarVideo(index));
         lista.appendChild(botao);
       });
 
-      if (videos.length) {
-        selecionarVideo(0);
-        carregarPlayerAPI();
-      } else {
-        status.textContent =
-          "Nenhum vídeo válido encontrado em youtube.txt.";
-      }
+      selecionarVideo(0);
+      status.textContent = "Tema: " + (temaEscolhido === "Todos" ? "Todos os vídeos" : temaEscolhido)
+        + " — " + videos.length + " vídeo(s).";
+      carregarPlayerAPI();
     }
 
     async function carregarLista() {
       try {
-        const resposta = await fetch(
-          "./youtube.txt?v=" + Date.now(),
-          { cache: "no-store" }
-        );
-
-        if (!resposta.ok) {
-          throw new Error("HTTP " + resposta.status);
-        }
-
+        const resposta = await fetch("./youtube.txt?v=" + Date.now(), { cache: "no-store" });
+        if (!resposta.ok) throw new Error("HTTP " + resposta.status);
         const texto = await resposta.text();
 
-        videos = texto.split(/\r?\n/)
+        todosVideos = texto.split(/\r?\n/)
           .map(linha => linha.trim())
           .filter(linha => linha && !linha.startsWith("#"))
-          .map(linha => {
-            const separador = linha.indexOf("|");
+          .map((linha, indice) => {
+            const partes = linha.split("|").map(parte => parte.trim());
+            let tema, titulo, url;
 
-            const titulo = separador >= 0
-              ? linha.slice(0, separador).trim()
-              : "";
-
-            const url = separador >= 0
-              ? linha.slice(separador + 1).trim()
-              : linha;
+            if (partes.length >= 3) {
+              tema = partes[0] || "Geral";
+              titulo = partes[1] || "Vídeo " + (indice + 1);
+              url = partes.slice(2).join("|").trim();
+            } else if (partes.length === 2) {
+              // Compatibilidade com o formato antigo: Título|URL
+              tema = "Geral";
+              titulo = partes[0] || "Vídeo " + (indice + 1);
+              url = partes[1];
+            } else {
+              tema = "Geral";
+              titulo = "Vídeo " + (indice + 1);
+              url = partes[0];
+            }
 
             const id = extrairId(url);
-
-            return id ? {
-              titulo: titulo || "Vídeo " + (videos.length + 1),
-              id
-            } : null;
+            return id ? { tema, titulo, id } : null;
           })
           .filter(Boolean);
 
+        montarMenu();
         montarLista();
       } catch (erro) {
         console.error(erro);
-        status.textContent =
-          "Erro ao ler youtube.txt. Verifique se o arquivo " +
-          "está publicado no GitHub Pages.";
+        status.textContent = "Erro ao ler youtube.txt. Verifique se o arquivo está publicado no GitHub Pages.";
       }
     }
 

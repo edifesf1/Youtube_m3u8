@@ -1,12 +1,14 @@
+# FORMATO: TEMA|TÍTULO DO VÍDEO|URL DO YOUTUBE
+# Adicione uma linha por vídeo. Você pode criar temas com qualquer nome.
+# Exemplos de temas: Pregações, Estudos Bíblicos, Música, Notícias, Lives
+# Linhas iniciadas com # são ignoradas.
+#
+# Para criar outro vídeo, copie este formato:
+# Pregações|Nome do vídeo|https://www.youtube.com/watch?v=ID_DO_VIDEO
 
-# Um link do YouTube por linha
-# Aceita videos publicos e lives publicas
-# Linhas iniciadas com # sao ignoradas
-
-# https://www.youtube.com/watch?v=COLOQUE_O_ID_DO_VIDEO
-APOCALIPSE SE CUMPRIR? Rodrigo Silva|https://www.youtube.com/watch?v=esh6wXrLJ2s
- A IGREJA NOS DIAS ATUAIS|https://www.youtube.com/watch?v=jYVOCVqiz2c
-Canal de música|https://www.youtube.com/watch?v=M7lc1UVf-VE
-Vídeo de exemplo|https://youtu.be/aqz-KE-bpKQ
-https://www.youtube.com/watch?v=jfKfPfyJRdk
-CNN Brsil | https://www.youtube.com/watch?v=z656hCZN3oc
+Estudos Bíblicos|APOCALIPSE SE CUMPRIR? Rodrigo Silva|https://www.youtube.com/watch?v=esh6wXrLJ2s
+Estudos Bíblicos|A IGREJA NOS DIAS ATUAIS|https://www.youtube.com/watch?v=jYVOCVqiz2c
+Música|Canal de música|https://www.youtube.com/watch?v=M7lc1UVf-VE
+Geral|Vídeo de exemplo|https://youtu.be/aqz-KE-bpKQ
+Música e Lives|Rádio / transmissão ao vivo|https://www.youtube.com/watch?v=jfKfPfyJRdk
+Notícias|CNN Brasil|https://www.youtube.com/watch?v=z656hCZN3oc

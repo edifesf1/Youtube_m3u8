@@ -1,0 +1,23 @@
+# Youtube IPTV — menu por temas
+
+## Como publicar
+1. Extraia este ZIP no computador.
+2. No GitHub, abra o repositório `Youtube_m3u8`.
+3. Envie/substitua os arquivos mantendo os caminhos e pastas.
+4. Faça commit na branch `main`.
+5. Abra o endereço do GitHub Pages para testar.
+
+## Como adicionar vídeos
+Edite `youtube.txt`, usando uma linha por vídeo neste formato:
+
+`Tema|Título do vídeo|https://www.youtube.com/watch?v=ID_DO_VIDEO`
+
+Exemplo:
+`Pregações|Mensagem de sábado|https://www.youtube.com/watch?v=XXXXXXXXXXX`
+
+- O texto antes do primeiro `|` é o tema.
+- O texto entre os separadores é o título.
+- O último campo é o link público do YouTube.
+- O menu é criado automaticamente a partir dos temas existentes.
+- Vídeos antigos no formato `Título|URL` continuam sendo lidos e aparecem em `Geral`.
+- A página do tema usa o mesmo `index.html`, mantendo o menu, o player e a lista.
