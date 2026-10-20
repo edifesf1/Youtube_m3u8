@@ -3,12 +3,7 @@
 #Religioso|Series|Temporada 1|Episódio 1|https://www.youtube.com/watch?v=ID_DO_VIDEO
 #Infantil|Filmes|Animação|Aventura infantil|https://www.youtube.com/watch?v=ID_DO_VIDEO
 
-Todos|live|Notícias|Notícias|CNN Brasil|https://www.youtube.com/@CNNbrasil/live
 #NEWS
-Normal|live|Notícias|Notícias|CNN Brasil|https://www.youtube.com/@CNNbrasil/live
-Normal|live|Notícias|Notícias|Jovem Pan|https://www.youtube.com/@jovempannews/live
-Normal|live|Notícias|Notícias|Record News|https://www.youtube.com/@recordnews/live
-Normal|live|Notícias|Notícias|SBT News|https://www.youtube.com/@SBTNews/live
 Normal|live|Notícias|Notícias|CNN Brasil 2|https://www.youtube.com/watch?v=z656hCZN3oc
 Normal|live|Notícias|Notícias|Jovem Pan 2|https://www.youtube.com/live/eTz4XgOQaAE
 Normal|live|Notícias|Notícias|Record News 2|https://www.youtube.com/watch?v=XEw29TBkPhI
