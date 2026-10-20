@@ -3,6 +3,7 @@
 #Religioso|Series|Temporada 1|Episódio 1|https://www.youtube.com/watch?v=ID_DO_VIDEO
 #Infantil|Filmes|Animação|Aventura infantil|https://www.youtube.com/watch?v=ID_DO_VIDEO
 
+Todos|live|Notícias|Notícias|CNN Brasil|https://www.youtube.com/@CNNbrasil/live
 #NEWS
 Normal|live|Notícias|Notícias|CNN Brasil|https://www.youtube.com/@CNNbrasil/live
 Normal|live|Notícias|Notícias|Jovem Pan|https://www.youtube.com/@jovempannews/live
