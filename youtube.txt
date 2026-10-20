@@ -5,7 +5,7 @@
 
 #NEWS
 Normal|Live|Notícias|CNN Brasil|https://www.youtube.com/watch?v=z656hCZN3oc
-Normal|Live|Notícias|CNN Brasil Live|https://www.youtube.com/CNNbrasil/live/eTz4XgOQaAE
+Normal|Live|Notícias|CNN Brasil Live|https://www.youtube.com/live/6u0neDhIKEw?si=NuzUcRUUuKcayxrZ
 Normal|Live|Notícias|Jovem Pan|https://www.youtube.com/live/eTz4XgOQaAE
 Normal|Live|Notícias|Record News|https://www.youtube.com/watch?v=XEw29TBkPhI
 Normal|Live|Notícias|SBT News|https://www.youtube.com/watch?v=hIZO264s_R8
