@@ -368,13 +368,57 @@
           hlsInstance = new Hls();
           hlsInstance.loadSource(item.url);
           hlsInstance.attachMedia(videoEl);
-          hlsInstance.on(Hls.Events.ERROR, function (_event, data) {
-            if (data && data.fatal) {
-              status.textContent = "Não foi possível reproduzir este link HLS. Verifique se o endereço está ativo e permite acesso pelo navegador (CORS).";
-              try { hlsInstance.destroy(); } catch (_) {}
-              hlsInstance = null;
-            }
-          });
+          
+hlsInstance.on(Hls.Events.ERROR, function (_event, data) {
+  if (!data) return;
+
+  console.error("Erro HLS:", {
+    tipo: data.type,
+    detalhe: data.details,
+    fatal: data.fatal,
+    respostaHTTP: data.response?.code,
+    url: data.url
+  });
+
+  if (data.fatal) {
+    const detalhe = data.details || "erro_desconhecido";
+    const http = data.response?.code;
+
+    if (http === 403) {
+      status.textContent =
+        "Erro 403: o servidor recusou o acesso ao vídeo.";
+    } else if (http === 404) {
+      status.textContent =
+        "Erro 404: playlist ou segmento não encontrado.";
+    } else if (
+      data.details === "manifestLoadError" ||
+      data.details === "manifestLoadTimeOut"
+    ) {
+      status.textContent =
+        "Não foi possível carregar a playlist. Verifique o link e o acesso do navegador.";
+    } else if (
+      data.details === "fragLoadError" ||
+      data.details === "fragLoadTimeOut"
+    ) {
+      status.textContent =
+        "A playlist foi localizada, mas um segmento do vídeo falhou ao carregar.";
+    } else if (data.details === "manifestParsingError") {
+      status.textContent =
+        "A resposta do servidor não contém uma playlist HLS válida.";
+    } else {
+      status.textContent =
+        "Erro HLS: " + detalhe +
+        ". Consulte o console do navegador para mais detalhes.";
+    }
+
+    try {
+      hlsInstance.destroy();
+    } catch (_) {}
+
+    hlsInstance = null;
+  }
+});
+
           hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => videoEl.play().catch(() => {}));
         } else {
           status.textContent = "Este navegador não oferece suporte à reprodução HLS.";
