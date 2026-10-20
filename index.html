@@ -384,8 +384,9 @@
               tema = "normal"; categoria = "filmes"; classificacao = "Geral";
             }
 
-            tema = (tema || "normal").toLocaleLowerCase("pt-BR");
-            categoria = (categoria || "filmes").toLocaleLowerCase("pt-BR");
+            // Preserve a grafia original do youtube.txt, incluindo letras maiúsculas.
+            tema = tema || "Normal";
+            categoria = categoria || "Filmes";
             classificacao = classificacao || "Geral";
             titulo = titulo || "Vídeo " + (indice + 1);
             const id = extrairId(url);
