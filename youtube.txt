@@ -11,7 +11,7 @@ Notícias|CNN Brasil Ao Vivo|https://www.youtube.com/@CNNbrasil/live
 Notícias|Jovem Pan|https://www.youtube.com/live/eTz4XgOQaAE
 Notícias|Record News|https://www.youtube.com/watch?v=XEw29TBkPhI
 Notícias|SBT News|https://www.youtube.com/watch?v=hIZO264s_R8
-Notícias|CNN Brasil|https://www.youtube.com/@CNNbrasil/live
+Notícias|CNN Brasil|https://www.youtube.com/watch?v=9O4vBS3O-FA
 Notícias|Jovem Pan|https://www.youtube.com/live/eTz4XgOQaAE
 Notícias|Record News|https://www.youtube.com/watch?v=XEw29TBkPhI
 Notícias|SBT News|https://www.youtube.com/watch?v=hIZO264s_R8
