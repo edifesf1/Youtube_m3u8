@@ -12,13 +12,7 @@
       background: #c00; padding: 10px 16px; min-height: 60px;
       position: sticky; top: 0; z-index: 8;
     }
-    #menuBtn {
-      border: 0; background: transparent; color: white; cursor: pointer;
-      font-size: 30px; line-height: 1; padding: 3px 8px; border-radius: 5px;
-    }
-    #menuBtn:hover { background: rgba(255,255,255,.15); }
-    #siteTitle { font-size: 22px; font-weight: bold; }
-    #temaAtual { margin-left: auto; font-size: 14px; font-weight: normal; }
+    #temaAtual { display: none; }
     main { max-width: 1000px; margin: auto; padding: 16px; }
     /* O player acompanha o fluxo da página para não cobrir a tarja vermelha. */
     #player {
@@ -67,7 +61,6 @@
     }
     #temasMenu button:hover, #temasMenu button.ativo { background: #383030; color: #fff; border-left: 4px solid #f33; }
     @media (max-width: 600px) {
-      #siteTitle { font-size: 19px; }
       #temaAtual { font-size: 12px; }
       main { padding: 10px; }
     }
@@ -76,27 +69,23 @@
     /* Menu flutuante em cascata A1 -> B2 -> C3 -> D4 */
     #cascadeBar {
       position: static; z-index: auto;
-      display: flex; align-items: flex-end; flex: 1 1 100%; gap: 8px;
+      display: flex; align-items: center; flex: 1 1 auto; gap: 7px;
       min-width: 0; padding: 0; background: transparent;
       border: 0; box-shadow: none; overflow-x: auto;
     }
-    .cascade-group { display: flex; flex-direction: column; gap: 5px; min-width: 170px; flex: 0 0 auto; }
-    .cascade-group label { font-size: 11px; font-weight: 700; color: #fff; letter-spacing: .4px; }
+    .cascade-group { display: flex; min-width: 0; flex: 1 1 0; }
+    .cascade-group label { display: none; }
     .cascade-group select {
-      min-width: 170px; max-width: 240px; padding: 10px 30px 10px 10px;
-      border: 1px solid #555; border-radius: 6px; background: #292929; color: #fff;
+      width: 100%; min-width: 0; max-width: 240px; padding: 9px 25px 9px 8px;
+      border: 1px solid rgba(255,255,255,.45); border-radius: 5px; background: #a90000; color: #fff;
       font-size: 14px; outline: none;
     }
-    .cascade-group select:focus { border-color: #f44; }
+    .cascade-group select:focus { border-color: #fff; }
     .cascade-group[hidden] { display: none; }
-    #cascadeHint { padding: 8px 12px 0; color: #bbb; font-size: 12px; }
     @media (max-width: 600px) {
-      header { gap: 8px; padding: 9px 10px; }
-      #cascadeBar { gap: 6px; padding: 0; }
-      .cascade-group, .cascade-group select { min-width: 135px; }
-      .cascade-group select { max-width: 170px; font-size: 13px; padding: 8px 24px 8px 8px; }
-      #siteTitle { font-size: 19px; }
-      #temaAtual { font-size: 12px; }
+      header { gap: 6px; padding: 8px; }
+      #cascadeBar { gap: 5px; }
+      .cascade-group select { max-width: none; font-size: 12px; padding: 8px 18px 8px 5px; }
     }
 
     body.bloqueado { overflow: hidden; }
@@ -123,8 +112,6 @@
     }
     #entrarLogin:hover { background: #e11; }
     #erroLogin { min-height: 22px; color: #ff7777; font-size: 14px; }
-    #sairLogin { margin-left: 10px; padding: 6px 9px; border: 1px solid #fff6;
-      background: #7a0000; color: white; border-radius: 5px; cursor: pointer; }
     body.bloqueado > header, body.bloqueado > #drawerOverlay, body.bloqueado > main { visibility: hidden; }
 
   </style>
@@ -141,29 +128,24 @@
   </section>
 
   <header>
-    <button id="menuBtn" aria-label="Abrir menu de temas" aria-expanded="false">☰</button>
-    <div id="siteTitle">Youtube IPTV</div>
-    <div id="temaAtual">Todos os temas</div>
-    <button id="sairLogin" type="button" hidden>Sair</button>
-
-  <nav id="cascadeBar" aria-label="Filtros A1 a D4">
-    <div class="cascade-group" id="grupoA1">
-      <label for="menuA1">A1 — Tema</label>
-      <select id="menuA1"><option value="">Selecione o tema</option></select>
-    </div>
-    <div class="cascade-group" id="grupoB2" hidden>
-      <label for="menuB2">B2 — Categoria</label>
-      <select id="menuB2"><option value="">Selecione a categoria</option></select>
-    </div>
-    <div class="cascade-group" id="grupoC3" hidden>
-      <label for="menuC3">C3 — Classificação</label>
-      <select id="menuC3"><option value="">Selecione a classificação</option></select>
-    </div>
-    <div class="cascade-group" id="grupoD4" hidden>
-      <label for="menuD4">D4 — Episódio</label>
-      <select id="menuD4"><option value="">Selecione o episódio</option></select>
-    </div>
-  </nav>
+    <nav id="cascadeBar" aria-label="Filtros">
+      <div class="cascade-group" id="grupoA1">
+        <label for="menuA1">Tema</label>
+        <select id="menuA1" title="Tema" aria-label="Tema"><option value=""></option></select>
+      </div>
+      <div class="cascade-group" id="grupoB2" hidden>
+        <label for="menuB2">Categoria</label>
+        <select id="menuB2" title="Categoria" aria-label="Categoria"><option value=""></option></select>
+      </div>
+      <div class="cascade-group" id="grupoC3" hidden>
+        <label for="menuC3">Classificação</label>
+        <select id="menuC3" title="Classificação" aria-label="Classificação"><option value=""></option></select>
+      </div>
+      <div class="cascade-group" id="grupoD4" hidden>
+        <label for="menuD4">Episódio</label>
+        <select id="menuD4" title="Episódio" aria-label="Episódio"><option value=""></option></select>
+      </div>
+    </nav>
   </header>
 
 
@@ -182,7 +164,6 @@
     const telaLogin = document.getElementById("telaLogin");
     const campoLogin = document.getElementById("campoLogin");
     const erroLogin = document.getElementById("erroLogin");
-    const sairLogin = document.getElementById("sairLogin");
     const botaoEntrar = document.getElementById("entrarLogin");
 
     async function carregarLogins() {
@@ -208,7 +189,6 @@
     function liberarAcesso(login) {
       document.body.classList.remove("bloqueado");
       telaLogin.style.display = "none";
-      sairLogin.hidden = false;
       sessionStorage.setItem("youtubeIptvLogin", login);
     }
     function validarLoginSalvo() {
@@ -227,10 +207,6 @@
         campoLogin.select();
       }
     });
-    sairLogin.addEventListener("click", function() {
-      sessionStorage.removeItem("youtubeIptvLogin");
-      location.reload();
-    });
     carregarLogins();
 
     let todosVideos = [];
@@ -240,24 +216,22 @@
 
     const status = document.getElementById("status");
     const lista = document.getElementById("lista");
-    const temaAtual = document.getElementById("temaAtual");
     const menuA1 = document.getElementById("menuA1");
     const menuB2 = document.getElementById("menuB2");
     const menuC3 = document.getElementById("menuC3");
     const menuD4 = document.getElementById("menuD4");
-    menuBtn.addEventListener("click", () => document.getElementById("cascadeBar").scrollIntoView({ behavior: "smooth", block: "start" }));
     const grupos = {
       A1: document.getElementById("grupoA1"),
       B2: document.getElementById("grupoB2"),
       C3: document.getElementById("grupoC3"),
-      D4: document.getElementById("grupoD4")
+      D4: document.getElementById("grupoD4"),
     };
 
-    function preencherSelect(select, placeholder, valores) {
+    function preencherSelect(select, valores) {
       select.replaceChildren();
       const inicial = document.createElement("option");
       inicial.value = "";
-      inicial.textContent = placeholder;
+      inicial.textContent = "";
       select.appendChild(inicial);
       [...new Set(valores.filter(Boolean))].sort((a,b) => a.localeCompare(b, "pt-BR")).forEach(valor => {
         const option = document.createElement("option");
@@ -265,11 +239,10 @@
         option.textContent = valor;
         select.appendChild(option);
       });
+      select.value = "";
     }
 
-    function mostrarGrupo(nome, mostrar) {
-      grupos[nome].hidden = !mostrar;
-    }
+    function mostrarGrupo(nome, mostrar) { grupos[nome].hidden = !mostrar; }
 
     function limparAbaixo(nivel) {
       if (nivel <= 1) { menuB2.value = ""; mostrarGrupo("B2", false); }
@@ -282,90 +255,68 @@
       const categoria = menuB2.value;
       const classificacao = menuC3.value;
       const episodio = menuD4.value;
-
       videos = todosVideos.filter(v =>
         (!tema || v.tema === tema) &&
         (!categoria || v.categoria === categoria) &&
         (!classificacao || v.classificacao === classificacao) &&
         (!episodio || v.titulo === episodio)
       );
-
-      temaAtual.textContent = [tema, categoria, classificacao].filter(Boolean).join(" / ") || "Selecione A1";
       lista.replaceChildren();
+      const area = document.getElementById("player");
+      area.replaceChildren();
+      player = null;
 
       if (!videos.length) {
-        status.textContent = "Nenhum vídeo cadastrado para esta seleção. Adicione itens em youtube.txt.";
-        if (player) player.remove();
-        player = null;
+        status.textContent = tema ? "Nenhum vídeo nesta seleção." : "Selecione os menus acima.";
         return;
       }
-
       videos.forEach((video, index) => {
         const botao = document.createElement("button");
         botao.textContent = `${index + 1}. ${video.titulo}`;
         botao.addEventListener("click", () => {
           selecionado = index;
           [...lista.children].forEach((b, i) => b.classList.toggle("ativo", i === index));
-          menuD4.value = video.titulo;
-          mostrarGrupo("D4", true);
           criarPlayer();
         });
         lista.appendChild(botao);
       });
-
       selecionado = 0;
       [...lista.children].forEach((b, i) => b.classList.toggle("ativo", i === 0));
-      status.textContent = `${videos.length} episódio(s)/vídeo(s) nesta seleção.`;
-      if (episodio) {
-        const idx = videos.findIndex(v => v.titulo === episodio);
-        if (idx >= 0) selecionado = idx;
-        criarPlayer();
-      } else if (videos.length === 1) {
-        criarPlayer();
-      } else {
-        const area = document.getElementById("player");
-        area.replaceChildren();
-        player = null;
-      }
+      status.textContent = `${videos.length} vídeo(s).`;
+      if (episodio && videos.length === 1) criarPlayer();
     }
 
     menuA1.addEventListener("change", () => {
       limparAbaixo(1);
       const tema = menuA1.value;
-      if (!tema) { aplicarFiltros(); return; }
-      preencherSelect(menuB2, "Selecione a categoria", todosVideos.filter(v => v.tema === tema).map(v => v.categoria));
-      mostrarGrupo("B2", true);
+      if (tema) {
+        preencherSelect(menuB2, todosVideos.filter(v => v.tema === tema).map(v => v.categoria));
+        mostrarGrupo("B2", true);
+      }
       aplicarFiltros();
     });
 
     menuB2.addEventListener("change", () => {
       limparAbaixo(2);
-      const tema = menuA1.value, categoria = menuB2.value;
-      if (!categoria) { aplicarFiltros(); return; }
-      preencherSelect(menuC3, "Selecione a classificação", todosVideos
-        .filter(v => v.tema === tema && v.categoria === categoria).map(v => v.classificacao));
-      mostrarGrupo("C3", true);
+      const { tema, categoria } = { tema: menuA1.value, categoria: menuB2.value };
+      if (tema && categoria) {
+        preencherSelect(menuC3, todosVideos.filter(v => v.tema === tema && v.categoria === categoria).map(v => v.classificacao));
+        mostrarGrupo("C3", true);
+      }
       aplicarFiltros();
     });
 
     menuC3.addEventListener("change", () => {
       limparAbaixo(3);
       const tema = menuA1.value, categoria = menuB2.value, classificacao = menuC3.value;
-      if (!classificacao) { aplicarFiltros(); return; }
-      preencherSelect(menuD4, "Selecione o episódio", todosVideos
-        .filter(v => v.tema === tema && v.categoria === categoria && v.classificacao === classificacao)
-        .map(v => v.titulo));
-      mostrarGrupo("D4", true);
+      if (tema && categoria && classificacao) {
+        preencherSelect(menuD4, todosVideos.filter(v => v.tema === tema && v.categoria === categoria && v.classificacao === classificacao).map(v => v.titulo));
+        mostrarGrupo("D4", true);
+      }
       aplicarFiltros();
     });
 
-    menuD4.addEventListener("change", () => {
-      aplicarFiltros();
-      if (menuD4.value) {
-        const idx = videos.findIndex(v => v.titulo === menuD4.value);
-        if (idx >= 0) { selecionado = idx; criarPlayer(); }
-      }
-    });
+    menuD4.addEventListener("change", aplicarFiltros);
 
     function extrairId(valor) {
       try {
@@ -442,7 +393,7 @@
           })
           .filter(Boolean);
 
-        preencherSelect(menuA1, "Selecione o tema", todosVideos.map(v => v.tema));
+        preencherSelect(menuA1, todosVideos.map(v => v.tema));
         limparAbaixo(1);
         aplicarFiltros();
       } catch (erro) {
