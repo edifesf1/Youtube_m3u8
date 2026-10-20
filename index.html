@@ -137,12 +137,6 @@
 
   <main>
     <div id="player"></div>
-    <p style="margin:10px 0">
-      <a href="https://www.cnnbrasil.com.br/ao-vivo/" target="_blank" rel="noopener noreferrer"
-         style="display:inline-block;background:#c00;color:#fff;padding:10px 14px;border-radius:6px;text-decoration:none;font-weight:bold">
-        Abrir CNN Brasil ao vivo no site oficial
-      </a>
-    </p>
     <div id="status">Carregando lista de vídeos...</div>
     <div id="lista"></div>
   </main>
@@ -247,27 +241,15 @@
     function extrairId(valor) {
       try {
         const url = new URL(valor);
-        const host = url.hostname.toLowerCase();
-        if (host === "youtu.be") {
+        if (url.hostname === "youtu.be") {
           return url.pathname.split("/").filter(Boolean)[0] || null;
         }
         if (!["youtube.com", "www.youtube.com", "m.youtube.com",
-              "youtube-nocookie.com", "www.youtube-nocookie.com"].includes(host)) {
+              "youtube-nocookie.com", "www.youtube-nocookie.com"].includes(url.hostname)) {
           return null;
         }
         if (url.pathname === "/watch") return url.searchParams.get("v");
         const partes = url.pathname.split("/").filter(Boolean);
-
-        // Link permanente de canal ao vivo: /@handle/live ou /channel/ID/live.
-        if (partes.length >= 2 && partes[partes.length - 1] === "live") {
-          if (partes[0] === "channel" && partes[1].startsWith("UC")) {
-            return "LIVECHANNEL:" + partes[1];
-          }
-          // ID oficial associado ao canal CNN Brasil (@CNNbrasil).
-          if (partes[0].toLowerCase() === "@cnnbrasil") {
-            return "LIVECHANNEL:UCvdwhh_fDyWccR42-rReZLw";
-          }
-        }
         if (["embed", "shorts", "live", "v"].includes(partes[0])) return partes[1] || null;
         return null;
       } catch { return null; }
@@ -276,19 +258,13 @@
     function criarPlayer() {
       if (!videos.length) return;
       const video = videos[selecionado];
-      const area = document.getElementById("player");
-
       const iframe = document.createElement("iframe");
       iframe.title = video.titulo;
-      if (video.id.startsWith("LIVECHANNEL:")) {
-        const channelId = video.id.substring("LIVECHANNEL:".length);
-        iframe.src = "https://www.youtube.com/embed/live_stream?channel=" + encodeURIComponent(channelId) + "&autoplay=1&mute=1&playsinline=1";
-      } else {
-        iframe.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(video.id) + "?autoplay=1&mute=1&playsinline=1&rel=0";
-      }
+      iframe.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(video.id) + "?autoplay=1&playsinline=1&rel=0";
       iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
       iframe.allowFullscreen = true;
       iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      const area = document.getElementById("player");
       area.replaceChildren(iframe);
       player = iframe;
     }
@@ -347,11 +323,7 @@
         lista.appendChild(botao);
       });
 
-      const cnnIndex = videos.findIndex(video =>
-        /cnn brasil ao vivo/i.test(video.titulo) ||
-        video.id === "LIVECHANNEL:UCvdwhh_fDyWccR42-rReZLw"
-      );
-      selecionarVideo(cnnIndex >= 0 ? cnnIndex : 0);
+      selecionarVideo(0);
       status.textContent = "Tema: " + (temaEscolhido === "Todos" ? "Todos os vídeos" : temaEscolhido)
         + " — " + videos.length + " vídeo(s).";
       criarPlayer();
@@ -363,10 +335,9 @@
         if (!resposta.ok) throw new Error("HTTP " + resposta.status);
         const texto = await resposta.text();
 
-        const linhasUnicas = [...new Set(texto.split(/\r?\n/)
+        todosVideos = texto.split(/\r?\n/)
           .map(linha => linha.trim())
-          .filter(linha => linha && !linha.startsWith("#")))];
-        todosVideos = linhasUnicas
+          .filter(linha => linha && !linha.startsWith("#"))
           .map((linha, indice) => {
             const partes = linha.split("|").map(parte => parte.trim());
             let tema, titulo, url;
