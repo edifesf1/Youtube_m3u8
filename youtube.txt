@@ -8,6 +8,7 @@ Normal|Live|Notícias|CNN Brasil|https://www.youtube.com/watch?v=z656hCZN3oc
 Normal|Live|Notícias|Jovem Pan|https://www.youtube.com/live/eTz4XgOQaAE
 Normal|Live|Notícias|Record News|https://www.youtube.com/watch?v=XEw29TBkPhI
 Normal|Live|Notícias|SBT News|https://www.youtube.com/watch?v=hIZO264s_R8
+Normal|Live|Notícias|BAND News|https://www.youtube.com/live/y-hyJDBWOtU?si=2LLZwKbfE2D8_0z7
 Normal|Live|Notícias|Band Bahia|https://hqf6tcxuhk.singularcdn.net.br/live/0196ff1e-8bbc-76d9-bcda-cfe58c2b0be6/s1/playlist_nova-a.m3u8?sjwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImIyMWI4MmQwLTA5ZjctNDQ4Mi05ODI2LWI5NDA1N2NhZjBjNCIsImlzcyI6IlNwYWxsYSIsImlhdCI6MTc5MTQ4OTEzMCwibmJmIjoxNzkxNDg5MTMwLCJleHAiOjE3OTQwODExMzAsInVyaV9zdWIiOiIvMDE5NmZmMWUtOGJiYy03NmQ5LWJjZGEtY2ZlNThjMmIwYmU2LyIsInVpZCI6ImIyMWI4MmQwLTA5ZjctNDQ4Mi05ODI2LWI5NDA1N2NhZjBjNCIsImJleSI6ZmFsc2UsImlpcCI6ZmFsc2UsImRwciI6ZmFsc2V9.8d3KtqxoIukaUg8Ws3xNnT1OYECYF1BK6XfJ7y03Uxc&uid=b21b82d0-09f7-4482-9826-b94057caf0c4
 Normal|Live|Notícias|Band PA|https://cdn.live.br1.jmvstream.com/w/LVW-15748/LVW15748_Yed7yzLuRC/playlist.m3u8
 
