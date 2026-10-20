@@ -25,3 +25,9 @@ Exemplo:
 
 ## Correção do player
 A versão atualizada não carrega a YouTube IFrame API externa. Ela usa um iframe de incorporação padrão e troca o vídeo quando você seleciona um item. Isso evita o erro causado especificamente pelo carregamento de `youtube.com/iframe_api`. Vídeos que desativam incorporação ainda podem não tocar.
+
+
+## Tela de login
+O site agora solicita um dos 200 códigos do arquivo `LOGINS-200.txt`. Não é necessária senha. O acesso fica liberado durante a sessão atual do navegador; o botão “Sair” encerra a sessão.
+
+**Aviso:** como o GitHub Pages é estático, esta tela não oferece proteção real contra alguém que inspecione os arquivos e veja os códigos. Para controle de acesso seguro, será necessário um backend de autenticação.
