@@ -4,10 +4,10 @@
 #Infantil|Filmes|Animação|Aventura infantil|https://www.youtube.com/watch?v=ID_DO_VIDEO
 
 #NEWS
-Normal|live|Notícias|Notícias|CNN Brasil 2|https://www.youtube.com/watch?v=z656hCZN3oc
-Normal|live|Notícias|Notícias|Jovem Pan 2|https://www.youtube.com/live/eTz4XgOQaAE
-Normal|live|Notícias|Notícias|Record News 2|https://www.youtube.com/watch?v=XEw29TBkPhI
-Normal|live|Notícias|Notícias|SBT News 2|https://www.youtube.com/watch?v=hIZO264s_R8
+Normal|live|Notícias|CNN Brasil 2|https://www.youtube.com/watch?v=z656hCZN3oc
+Normal|live|Notícias|Jovem Pan 2|https://www.youtube.com/live/eTz4XgOQaAE
+Normal|live|Notícias|Record News 2|https://www.youtube.com/watch?v=XEw29TBkPhI
+Normal|live|Notícias|SBT News 2|https://www.youtube.com/watch?v=hIZO264s_R8
 
 Religioso|Series|Estudos Bíblicos|APOCALIPSE SE CUMPRIR? Rodrigo Silva|https://www.youtube.com/watch?v=esh6wXrLJ2s
 Religioso|Series|Estudos Bíblicos|A IGREJA NOS DIAS ATUAIS|https://www.youtube.com/watch?v=jYVOCVqiz2c
