@@ -7,8 +7,9 @@
 # Pregações|Nome do vídeo|https://www.youtube.com/watch?v=ID_DO_VIDEO
 
 #NEWS
-Notícias|Record News|https://www.youtube.com/watch?v=XEw29TBkPhI
 Notícias|CNN Brasil|https://www.youtube.com/watch?v=z656hCZN3oc
+Notícias|Record News|https://www.youtube.com/watch?v=XEw29TBkPhI
+Notícias|SBT News|https://www.youtube.com/watch?v=hIZO264s_R8
 Estudos Bíblicos|APOCALIPSE SE CUMPRIR? Rodrigo Silva|https://www.youtube.com/watch?v=esh6wXrLJ2s
 Estudos Bíblicos|A IGREJA NOS DIAS ATUAIS|https://www.youtube.com/watch?v=jYVOCVqiz2c
 Música|Canal de música|https://www.youtube.com/watch?v=M7lc1UVf-VE
