@@ -10,17 +10,17 @@
 ## Como adicionar vídeos
 Edite `youtube.txt`, usando uma linha por vídeo neste formato:
 
-`Tema|Título do vídeo|https://www.youtube.com/watch?v=ID_DO_VIDEO`
+Formato novo (5 campos):
+`Tema|Categoria|Classificação|Episódio/Título|URL`
 
-Exemplo:
-`Pregações|Mensagem de sábado|https://www.youtube.com/watch?v=XXXXXXXXXXX`
+Exemplos:
+`normal|live|Notícias|CNN Brasil|https://www.youtube.com/@CNNbrasil/live`
+`religioso|series|Temporada 1|Episódio 1 - Apocalipse|https://www.youtube.com/watch?v=XXXXXXXXXXX`
+`infantil|filmes|Animação|A aventura|https://www.youtube.com/watch?v=XXXXXXXXXXX`
 
-- O texto antes do primeiro `|` é o tema.
-- O texto entre os separadores é o título.
-- O último campo é o link público do YouTube.
-- O menu é criado automaticamente a partir dos temas existentes.
-- Vídeos antigos no formato `Título|URL` continuam sendo lidos e aparecem em `Geral`.
-- A página do tema usa o mesmo `index.html`, mantendo o menu, o player e a lista.
+Os menus aparecem em sequência: A1 Tema (normal, religioso, infantil), B2 Categoria (live, filmes, series), C3 Classificação (Ação, Comédia, Terror, Drama, Temporada etc.) e D4 Episódio/Título. Cada menu seguinte aparece quando você seleciona o anterior. As opções de B2, C3 e D4 são geradas automaticamente com base nos itens cadastrados em youtube.txt.
+
+O formato antigo `Tema|Título|URL` continua sendo aceito e convertido para uma classificação compatível. O formato antigo `Título|URL` também continua sendo aceito.
 
 
 ## Correção do player

@@ -33,7 +33,7 @@
     #player iframe { display: block; width: 100%; height: 100%; border: 0; }
     #status, #lista { position: relative; z-index: 1; }
     @media (max-width: 600px) {
-      #player { top: 60px; }
+      #player { top: 124px; }
     }
     #status { padding: 12px 0; color: #ccc; }
     #lista { display: grid; gap: 8px; }
@@ -74,6 +74,31 @@
       #siteTitle { font-size: 19px; }
       #temaAtual { font-size: 12px; }
       main { padding: 10px; }
+    }
+
+
+    /* Menu flutuante em cascata A1 -> B2 -> C3 -> D4 */
+    #cascadeBar {
+      position: sticky; top: 60px; z-index: 8;
+      display: flex; align-items: flex-start; gap: 8px;
+      padding: 10px 12px; background: rgba(20,20,20,.97);
+      border-bottom: 1px solid #444; box-shadow: 0 5px 14px rgba(0,0,0,.35);
+      overflow-x: auto;
+    }
+    .cascade-group { display: flex; flex-direction: column; gap: 5px; min-width: 170px; flex: 0 0 auto; }
+    .cascade-group label { font-size: 11px; font-weight: 700; color: #ffb3b3; letter-spacing: .6px; }
+    .cascade-group select {
+      min-width: 170px; max-width: 240px; padding: 10px 30px 10px 10px;
+      border: 1px solid #555; border-radius: 6px; background: #292929; color: #fff;
+      font-size: 14px; outline: none;
+    }
+    .cascade-group select:focus { border-color: #f44; }
+    .cascade-group[hidden] { display: none; }
+    #cascadeHint { padding: 8px 12px 0; color: #bbb; font-size: 12px; }
+    @media (max-width: 600px) {
+      #cascadeBar { top: 60px; gap: 6px; padding: 8px; }
+      .cascade-group, .cascade-group select { min-width: 145px; }
+      .cascade-group select { max-width: 180px; font-size: 13px; }
     }
 
     body.bloqueado { overflow: hidden; }
@@ -124,16 +149,24 @@
     <button id="sairLogin" type="button" hidden>Sair</button>
   </header>
 
-  <div id="drawerOverlay" aria-hidden="true">
-    <nav id="drawer" aria-label="Menu de temas">
-      <div class="drawerHeader">
-        <span>Temas</span>
-        <button id="closeMenu" aria-label="Fechar menu">×</button>
-      </div>
-      <div class="menuIntro">Escolha uma categoria para ver seus vídeos.</div>
-      <div id="temasMenu"></div>
-    </nav>
-  </div>
+  <nav id="cascadeBar" aria-label="Filtros A1 a D4">
+    <div class="cascade-group" id="grupoA1">
+      <label for="menuA1">A1 — Tema</label>
+      <select id="menuA1"><option value="">Selecione o tema</option></select>
+    </div>
+    <div class="cascade-group" id="grupoB2" hidden>
+      <label for="menuB2">B2 — Categoria</label>
+      <select id="menuB2"><option value="">Selecione a categoria</option></select>
+    </div>
+    <div class="cascade-group" id="grupoC3" hidden>
+      <label for="menuC3">C3 — Classificação</label>
+      <select id="menuC3"><option value="">Selecione a classificação</option></select>
+    </div>
+    <div class="cascade-group" id="grupoD4" hidden>
+      <label for="menuD4">D4 — Episódio</label>
+      <select id="menuD4"><option value="">Selecione o episódio</option></select>
+    </div>
+  </nav>
 
   <main>
     <div id="player"></div>
@@ -207,35 +240,131 @@
 
     const status = document.getElementById("status");
     const lista = document.getElementById("lista");
-    const temasMenu = document.getElementById("temasMenu");
     const temaAtual = document.getElementById("temaAtual");
-    const overlay = document.getElementById("drawerOverlay");
-    const menuBtn = document.getElementById("menuBtn");
+    const menuA1 = document.getElementById("menuA1");
+    const menuB2 = document.getElementById("menuB2");
+    const menuC3 = document.getElementById("menuC3");
+    const menuD4 = document.getElementById("menuD4");
+    menuBtn.addEventListener("click", () => document.getElementById("cascadeBar").scrollIntoView({ behavior: "smooth", block: "start" }));
+    const grupos = {
+      A1: document.getElementById("grupoA1"),
+      B2: document.getElementById("grupoB2"),
+      C3: document.getElementById("grupoC3"),
+      D4: document.getElementById("grupoD4")
+    };
 
-    function temaDaURL() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get("tema") || "Todos";
+    function preencherSelect(select, placeholder, valores) {
+      select.replaceChildren();
+      const inicial = document.createElement("option");
+      inicial.value = "";
+      inicial.textContent = placeholder;
+      select.appendChild(inicial);
+      [...new Set(valores.filter(Boolean))].sort((a,b) => a.localeCompare(b, "pt-BR")).forEach(valor => {
+        const option = document.createElement("option");
+        option.value = valor;
+        option.textContent = valor;
+        select.appendChild(option);
+      });
     }
 
-    function abrirMenu() {
-      overlay.classList.add("aberto");
-      overlay.setAttribute("aria-hidden", "false");
-      menuBtn.setAttribute("aria-expanded", "true");
+    function mostrarGrupo(nome, mostrar) {
+      grupos[nome].hidden = !mostrar;
     }
 
-    function fecharMenu() {
-      overlay.classList.remove("aberto");
-      overlay.setAttribute("aria-hidden", "true");
-      menuBtn.setAttribute("aria-expanded", "false");
+    function limparAbaixo(nivel) {
+      if (nivel <= 1) { menuB2.value = ""; mostrarGrupo("B2", false); }
+      if (nivel <= 2) { menuC3.value = ""; mostrarGrupo("C3", false); }
+      if (nivel <= 3) { menuD4.value = ""; mostrarGrupo("D4", false); }
     }
 
-    menuBtn.addEventListener("click", abrirMenu);
-    document.getElementById("closeMenu").addEventListener("click", fecharMenu);
-    overlay.addEventListener("click", event => {
-      if (event.target === overlay) fecharMenu();
+    function aplicarFiltros() {
+      const tema = menuA1.value;
+      const categoria = menuB2.value;
+      const classificacao = menuC3.value;
+      const episodio = menuD4.value;
+
+      videos = todosVideos.filter(v =>
+        (!tema || v.tema === tema) &&
+        (!categoria || v.categoria === categoria) &&
+        (!classificacao || v.classificacao === classificacao) &&
+        (!episodio || v.titulo === episodio)
+      );
+
+      temaAtual.textContent = [tema, categoria, classificacao].filter(Boolean).join(" / ") || "Selecione A1";
+      lista.replaceChildren();
+
+      if (!videos.length) {
+        status.textContent = "Nenhum vídeo cadastrado para esta seleção. Adicione itens em youtube.txt.";
+        if (player) player.remove();
+        player = null;
+        return;
+      }
+
+      videos.forEach((video, index) => {
+        const botao = document.createElement("button");
+        botao.textContent = `${index + 1}. ${video.titulo}`;
+        botao.addEventListener("click", () => {
+          selecionado = index;
+          [...lista.children].forEach((b, i) => b.classList.toggle("ativo", i === index));
+          menuD4.value = video.titulo;
+          mostrarGrupo("D4", true);
+          criarPlayer();
+        });
+        lista.appendChild(botao);
+      });
+
+      selecionado = 0;
+      [...lista.children].forEach((b, i) => b.classList.toggle("ativo", i === 0));
+      status.textContent = `${videos.length} episódio(s)/vídeo(s) nesta seleção.`;
+      if (episodio) {
+        const idx = videos.findIndex(v => v.titulo === episodio);
+        if (idx >= 0) selecionado = idx;
+        criarPlayer();
+      } else if (videos.length === 1) {
+        criarPlayer();
+      } else {
+        const area = document.getElementById("player");
+        area.replaceChildren();
+        player = null;
+      }
+    }
+
+    menuA1.addEventListener("change", () => {
+      limparAbaixo(1);
+      const tema = menuA1.value;
+      if (!tema) { aplicarFiltros(); return; }
+      preencherSelect(menuB2, "Selecione a categoria", todosVideos.filter(v => v.tema === tema).map(v => v.categoria));
+      mostrarGrupo("B2", true);
+      aplicarFiltros();
     });
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape") fecharMenu();
+
+    menuB2.addEventListener("change", () => {
+      limparAbaixo(2);
+      const tema = menuA1.value, categoria = menuB2.value;
+      if (!categoria) { aplicarFiltros(); return; }
+      preencherSelect(menuC3, "Selecione a classificação", todosVideos
+        .filter(v => v.tema === tema && v.categoria === categoria).map(v => v.classificacao));
+      mostrarGrupo("C3", true);
+      aplicarFiltros();
+    });
+
+    menuC3.addEventListener("change", () => {
+      limparAbaixo(3);
+      const tema = menuA1.value, categoria = menuB2.value, classificacao = menuC3.value;
+      if (!classificacao) { aplicarFiltros(); return; }
+      preencherSelect(menuD4, "Selecione o episódio", todosVideos
+        .filter(v => v.tema === tema && v.categoria === categoria && v.classificacao === classificacao)
+        .map(v => v.titulo));
+      mostrarGrupo("D4", true);
+      aplicarFiltros();
+    });
+
+    menuD4.addEventListener("change", () => {
+      aplicarFiltros();
+      if (menuD4.value) {
+        const idx = videos.findIndex(v => v.titulo === menuD4.value);
+        if (idx >= 0) { selecionado = idx; criarPlayer(); }
+      }
     });
 
     function extrairId(valor) {
@@ -269,66 +398,6 @@
       player = iframe;
     }
 
-    function selecionarVideo(index) {
-      selecionado = index;
-      [...lista.children].forEach((botao, i) => botao.classList.toggle("ativo", i === index));
-      if (videos[index]) criarPlayer();
-    }
-
-    function irParaTema(tema) {
-      const url = new URL(window.location.href);
-      if (tema === "Todos") url.searchParams.delete("tema");
-      else url.searchParams.set("tema", tema);
-      window.location.href = url.pathname + url.search + url.hash;
-    }
-
-    function montarMenu() {
-      const temaEscolhido = temaDaURL();
-      const temas = ["Todos", ...new Set(todosVideos.map(v => v.tema))];
-      temasMenu.replaceChildren();
-
-      temas.forEach(tema => {
-        const botao = document.createElement("button");
-        botao.textContent = tema === "Todos" ? "📺  Todos os vídeos" : "▶  " + tema;
-        botao.classList.toggle("ativo", tema === temaEscolhido);
-        botao.addEventListener("click", () => {
-          fecharMenu();
-          if (tema !== temaEscolhido) irParaTema(tema);
-          else fecharMenu();
-        });
-        temasMenu.appendChild(botao);
-      });
-    }
-
-    function montarLista() {
-      const temaEscolhido = temaDaURL();
-      videos = temaEscolhido === "Todos"
-        ? [...todosVideos]
-        : todosVideos.filter(video => video.tema.toLocaleLowerCase() === temaEscolhido.toLocaleLowerCase());
-
-      temaAtual.textContent = temaEscolhido === "Todos" ? "Todos os temas" : temaEscolhido;
-      lista.replaceChildren();
-
-      if (!videos.length) {
-        status.textContent = "Não há vídeos neste tema. Confira as categorias em youtube.txt.";
-        if (player) player.remove();
-        player = null;
-        return;
-      }
-
-      videos.forEach((video, index) => {
-        const botao = document.createElement("button");
-        botao.textContent = `${index + 1}. ${video.titulo}`;
-        botao.addEventListener("click", () => selecionarVideo(index));
-        lista.appendChild(botao);
-      });
-
-      selecionarVideo(0);
-      status.textContent = "Tema: " + (temaEscolhido === "Todos" ? "Todos os vídeos" : temaEscolhido)
-        + " — " + videos.length + " vídeo(s).";
-      criarPlayer();
-    }
-
     async function carregarLista() {
       try {
         const resposta = await fetch("./youtube.txt?v=" + Date.now(), { cache: "no-store" });
@@ -340,30 +409,42 @@
           .filter(linha => linha && !linha.startsWith("#"))
           .map((linha, indice) => {
             const partes = linha.split("|").map(parte => parte.trim());
-            let tema, titulo, url;
+            let tema, categoria, classificacao, titulo, url;
 
-            if (partes.length >= 3) {
-              tema = partes[0] || "Geral";
+            if (partes.length >= 5) {
+              // Formato novo: Tema|Categoria|Classificação|Episódio/Título|URL
+              [tema, categoria, classificacao, titulo] = partes;
+              url = partes.slice(4).join("|").trim();
+            } else if (partes.length >= 3) {
+              // Compatibilidade: Tema|Título|URL
+              const temaAntigo = partes[0] || "Geral";
               titulo = partes[1] || "Vídeo " + (indice + 1);
               url = partes.slice(2).join("|").trim();
+              tema = /bíblic|preg|igreja|relig|estudo/i.test(temaAntigo + " " + titulo) ? "religioso" : "normal";
+              categoria = /live|ao vivo|rádio|radio|notícia|cnn|jovem pan|record news|sbt news/i.test(titulo + " " + url) ? "live" : "filmes";
+              classificacao = temaAntigo;
             } else if (partes.length === 2) {
-              // Compatibilidade com o formato antigo: Título|URL
-              tema = "Geral";
               titulo = partes[0] || "Vídeo " + (indice + 1);
               url = partes[1];
+              tema = "normal"; categoria = "filmes"; classificacao = "Geral";
             } else {
-              tema = "Geral";
               titulo = "Vídeo " + (indice + 1);
               url = partes[0];
+              tema = "normal"; categoria = "filmes"; classificacao = "Geral";
             }
 
+            tema = (tema || "normal").toLocaleLowerCase("pt-BR");
+            categoria = (categoria || "filmes").toLocaleLowerCase("pt-BR");
+            classificacao = classificacao || "Geral";
+            titulo = titulo || "Vídeo " + (indice + 1);
             const id = extrairId(url);
-            return id ? { tema, titulo, id } : null;
+            return id ? { tema, categoria, classificacao, titulo, id, url } : null;
           })
           .filter(Boolean);
 
-        montarMenu();
-        montarLista();
+        preencherSelect(menuA1, "Selecione o tema", todosVideos.map(v => v.tema));
+        limparAbaixo(1);
+        aplicarFiltros();
       } catch (erro) {
         console.error(erro);
         status.textContent = "Erro ao ler youtube.txt. Verifique se o arquivo está publicado no GitHub Pages.";
