@@ -92,7 +92,6 @@
     let todosVideos = [];
     let videos = [];
     let player = null;
-    let apiPronta = false;
     let selecionado = 0;
 
     const status = document.getElementById("status");
@@ -145,50 +144,24 @@
       } catch { return null; }
     }
 
-    function carregarPlayerAPI() {
-      if (window.YT && window.YT.Player) {
-        apiPronta = true;
-        criarPlayer();
-        return;
-      }
-      window.onYouTubeIframeAPIReady = function () {
-        apiPronta = true;
-        criarPlayer();
-      };
-      if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
-        const script = document.createElement("script");
-        script.src = "https://www.youtube.com/iframe_api";
-        script.onerror = () => {
-          status.textContent = "Não foi possível carregar o player do YouTube.";
-        };
-        document.head.appendChild(script);
-      }
-    }
-
     function criarPlayer() {
       if (!videos.length) return;
-      if (player && typeof player.loadVideoById === "function") {
-        player.loadVideoById(videos[selecionado].id);
-        return;
-      }
-      player = new YT.Player("player", {
-        videoId: videos[selecionado].id,
-        playerVars: { playsinline: 1, rel: 0 },
-        events: {
-          onReady: () => {
-            status.textContent = "Lista carregada: " + videos.length + " vídeo(s).";
-          },
-          onError: () => {
-            status.textContent = "Não foi possível reproduzir este vídeo. Ele pode bloquear a incorporação.";
-          }
-        }
-      });
+      const video = videos[selecionado];
+      const iframe = document.createElement("iframe");
+      iframe.title = video.titulo;
+      iframe.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(video.id) + "?playsinline=1&rel=0";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      const area = document.getElementById("player");
+      area.replaceChildren(iframe);
+      player = iframe;
     }
 
     function selecionarVideo(index) {
       selecionado = index;
       [...lista.children].forEach((botao, i) => botao.classList.toggle("ativo", i === index));
-      if (player && apiPronta && videos[index]) player.loadVideoById(videos[index].id);
+      if (videos[index]) criarPlayer();
     }
 
     function irParaTema(tema) {
@@ -227,7 +200,8 @@
 
       if (!videos.length) {
         status.textContent = "Não há vídeos neste tema. Confira as categorias em youtube.txt.";
-        if (player && player.stopVideo) player.stopVideo();
+        if (player) player.remove();
+        player = null;
         return;
       }
 
@@ -241,7 +215,7 @@
       selecionarVideo(0);
       status.textContent = "Tema: " + (temaEscolhido === "Todos" ? "Todos os vídeos" : temaEscolhido)
         + " — " + videos.length + " vídeo(s).";
-      carregarPlayerAPI();
+      criarPlayer();
     }
 
     async function carregarLista() {

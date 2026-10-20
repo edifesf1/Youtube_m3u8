@@ -21,3 +21,7 @@ Exemplo:
 - O menu é criado automaticamente a partir dos temas existentes.
 - Vídeos antigos no formato `Título|URL` continuam sendo lidos e aparecem em `Geral`.
 - A página do tema usa o mesmo `index.html`, mantendo o menu, o player e a lista.
+
+
+## Correção do player
+A versão atualizada não carrega a YouTube IFrame API externa. Ela usa um iframe de incorporação padrão e troca o vídeo quando você seleciona um item. Isso evita o erro causado especificamente pelo carregamento de `youtube.com/iframe_api`. Vídeos que desativam incorporação ainda podem não tocar.
