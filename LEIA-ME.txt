@@ -31,3 +31,6 @@ A versão atualizada não carrega a YouTube IFrame API externa. Ela usa um ifram
 O site agora solicita um dos 200 códigos do arquivo `LOGINS-200.txt`. Não é necessária senha. O acesso fica liberado durante a sessão atual do navegador; o botão “Sair” encerra a sessão.
 
 **Aviso:** como o GitHub Pages é estático, esta tela não oferece proteção real contra alguém que inspecione os arquivos e veja os códigos. Para controle de acesso seguro, será necessário um backend de autenticação.
+
+
+ATUALIZAR LOGIN: os códigos são lidos de LOGINS-200.txt em cada abertura do site. Edite esse arquivo, um login por linha (YT + 8 letras/números), e faça commit no GitHub. Para os vídeos, edite youtube.txt e faça commit; o site lê esse arquivo novamente ao abrir.
