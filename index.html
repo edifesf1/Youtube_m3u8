@@ -241,15 +241,27 @@
     function extrairId(valor) {
       try {
         const url = new URL(valor);
-        if (url.hostname === "youtu.be") {
+        const host = url.hostname.toLowerCase();
+        if (host === "youtu.be") {
           return url.pathname.split("/").filter(Boolean)[0] || null;
         }
         if (!["youtube.com", "www.youtube.com", "m.youtube.com",
-              "youtube-nocookie.com", "www.youtube-nocookie.com"].includes(url.hostname)) {
+              "youtube-nocookie.com", "www.youtube-nocookie.com"].includes(host)) {
           return null;
         }
         if (url.pathname === "/watch") return url.searchParams.get("v");
         const partes = url.pathname.split("/").filter(Boolean);
+
+        // Link permanente de canal ao vivo: /@handle/live ou /channel/ID/live.
+        if (partes.length >= 2 && partes[partes.length - 1] === "live") {
+          if (partes[0] === "channel" && partes[1].startsWith("UC")) {
+            return "LIVECHANNEL:" + partes[1];
+          }
+          // ID oficial associado ao canal CNN Brasil (@CNNbrasil).
+          if (partes[0].toLowerCase() === "@cnnbrasil") {
+            return "LIVECHANNEL:UCvdwhh_fDyWccR42-rReZLw";
+          }
+        }
         if (["embed", "shorts", "live", "v"].includes(partes[0])) return partes[1] || null;
         return null;
       } catch { return null; }
@@ -260,7 +272,12 @@
       const video = videos[selecionado];
       const iframe = document.createElement("iframe");
       iframe.title = video.titulo;
-      iframe.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(video.id) + "?autoplay=1&playsinline=1&rel=0";
+      if (video.id.startsWith("LIVECHANNEL:")) {
+        const channelId = video.id.substring("LIVECHANNEL:".length);
+        iframe.src = "https://www.youtube.com/embed/live_stream?channel=" + encodeURIComponent(channelId) + "&autoplay=1&playsinline=1";
+      } else {
+        iframe.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(video.id) + "?autoplay=1&playsinline=1&rel=0";
+      }
       iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
       iframe.allowFullscreen = true;
       iframe.referrerPolicy = "strict-origin-when-cross-origin";
