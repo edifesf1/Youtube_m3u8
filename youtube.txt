@@ -4,14 +4,26 @@
 #Infantil|Filmes|Animação|Aventura infantil|https://www.youtube.com/watch?v=ID_DO_VIDEO
 
 #NEWS
-Normal|Live|Notícias|CNN Brasil|https://www.youtube.com/watch?v=z656hCZN3oc
 Normal|Live|Notícias|CNN Brasil Live|https://www.youtube.com/live/6u0neDhIKEw
 Normal|Live|Notícias|Jovem Pan|https://www.youtube.com/live/eTz4XgOQaAE
-Normal|Live|Notícias|Record News|https://www.youtube.com/watch?v=XEw29TBkPhI
-Normal|Live|Notícias|SBT News|https://www.youtube.com/watch?v=hIZO264s_R8
-Normal|Live|Notícias|BAND News|https://www.youtube.com/live/y-hyJDBWOtU?si=2LLZwKbfE2D8_0z7
-Normal|Live|Notícias|Band Bahia|https://hqf6tcxuhk.singularcdn.net.br/live/0196ff1e-8bbc-76d9-bcda-cfe58c2b0be6/s1/playlist_nova-a.m3u8?sjwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImIyMWI4MmQwLTA5ZjctNDQ4Mi05ODI2LWI5NDA1N2NhZjBjNCIsImlzcyI6IlNwYWxsYSIsImlhdCI6MTc5MTQ4OTEzMCwibmJmIjoxNzkxNDg5MTMwLCJleHAiOjE3OTQwODExMzAsInVyaV9zdWIiOiIvMDE5NmZmMWUtOGJiYy03NmQ5LWJjZGEtY2ZlNThjMmIwYmU2LyIsInVpZCI6ImIyMWI4MmQwLTA5ZjctNDQ4Mi05ODI2LWI5NDA1N2NhZjBjNCIsImJleSI6ZmFsc2UsImlpcCI6ZmFsc2UsImRwciI6ZmFsc2V9.8d3KtqxoIukaUg8Ws3xNnT1OYECYF1BK6XfJ7y03Uxc&uid=b21b82d0-09f7-4482-9826-b94057caf0c4
-Normal|Live|Notícias|Band PA|https://cdn.live.br1.jmvstream.com/w/LVW-15748/LVW15748_Yed7yzLuRC/playlist.m3u8
+Normal|Live|Notícias|Record News|https://www.youtube.com/live/XEw29TBkPhI
+Normal|Live|Notícias|SBT News|https://www.youtube.com/live/ixoqKcib5Pc
+Normal|Live|Notícias|BAND News|https://www.youtube.com/live/y-hyJDBWOtU
+
+Normal|Live|Notícias|CNN Brasil|https://amg01391-sbtinfast-amg01391c4-lg-br-4597.playouts.now.amagi.tv/playlist/amg01391-addigital-cnnbrasil-lgbr/playlist.m3u8
+Normal|Live|Notícias|JovemPan 1|http://170.83.49.66:8083/JOVEMPANNewsHD/index.m3u8
+Normal|Live|Notícias|Record News|https://rnw-rn.otteravision.com/rnw/rn/rnw_rn.m3u8
+Normal|Live|Notícias|SBT News|https://dai.google.com/linear/hls/event/1XSOdtQ0SH2G8OEmEfGgjQ/master.m3u8
+Normal|Live|Notícias|Veja +|https://gpa-vja.otteravision.com/gpa/vja/vja.m3u8
+Normal|Live|Notícias|J3News TV|https://video01.brascast.com/d92ebb4f/d92ebb4f/playlist.m3u8
+Normal|Live|Notícias|JovemPan - Cidade Verde|https://televisaocidadeverde.brasilstream.com.br/hls/televisaocidadeverde/index.m3u8
+Normal|Live|Notícias|JovemPan 2|https://amg01391-amg01391c3-tcl-spain-5038.playouts.now.amagi.tv/playlist1080-p.m3u8
+Normal|Live|Notícias|Record News|https://run-rnw-rn.otteravision.com/rnw/rn/rnw_rn_720p_high.m3u8
+Normal|Live|Notícias|Record News 2|http://45.162.64.114/RECORD_News/index.m3u8
+Normal|Live|Notícias|RS News|https://video07.logicahost.com.br/rsNews01/rsNews01/chunklist_w451977208.m3u8
+Normal|Live|Notícias|SBT News 2|https://sbtNews.maissbt.com/3.m3u8
+Normal|Live|Notícias|TCM 10|https://live.tcm10.com.br/tcm10hd/stream.m3u8
+Normal|Live|Notícias|TV Fronteira|https://tvfronteira.brasilstream.com.br/hls/tvfronteira/index.m3u8
 
 Religioso|Series|Estudos Bíblicos|APOCALIPSE SE CUMPRIR? Rodrigo Silva|https://www.youtube.com/watch?v=esh6wXrLJ2s
 Religioso|Series|Estudos Bíblicos|A IGREJA NOS DIAS ATUAIS|https://www.youtube.com/watch?v=jYVOCVqiz2c
@@ -235,20 +247,6 @@ Normal|Live|Music|Trace Brazuca 1|https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg0
 Normal|Live|Music|Trace Brazuca 2|https://amg01131-tracetv-tracebrazuca-xiaomi-vvr19.amagi.tv/playlist/amg01131-tracetv-tracebrazuca-xiaomi/playlist.m3u8
 Normal|Live|Music|TV Café|https://srv5.zcast.com.br/tvcafe/tvcafe/playlist.m3u8
 Normal|Live|Music|TV Sao Raimundo|https://stmv1.voxtvhd.com.br/9030/9030/playlist.m3u8
-Normal|Live|News|CNN Brasil|https://amg01391-sbtinfast-amg01391c4-lg-br-4597.playouts.now.amagi.tv/playlist/amg01391-addigital-cnnbrasil-lgbr/playlist.m3u8
-Normal|Live|News|JovemPan 1|http://170.83.49.66:8083/JOVEMPANNewsHD/index.m3u8
-Normal|Live|News|Record News|https://rnw-rn.otteravision.com/rnw/rn/rnw_rn.m3u8
-Normal|Live|News|SBT News|https://dai.google.com/linear/hls/event/1XSOdtQ0SH2G8OEmEfGgjQ/master.m3u8
-Normal|Live|News|Veja +|https://gpa-vja.otteravision.com/gpa/vja/vja.m3u8
-Normal|Live|News|J3News TV|https://video01.brascast.com/d92ebb4f/d92ebb4f/playlist.m3u8
-Normal|Live|News|JovemPan - Cidade Verde|https://televisaocidadeverde.brasilstream.com.br/hls/televisaocidadeverde/index.m3u8
-Normal|Live|News|JovemPan 2|https://amg01391-amg01391c3-tcl-spain-5038.playouts.now.amagi.tv/playlist1080-p.m3u8
-Normal|Live|News|Record News|https://run-rnw-rn.otteravision.com/rnw/rn/rnw_rn_720p_high.m3u8
-Normal|Live|News|Record News 2|http://45.162.64.114/RECORD_News/index.m3u8
-Normal|Live|News|RS News|https://video07.logicahost.com.br/rsNews01/rsNews01/chunklist_w451977208.m3u8
-Normal|Live|News|SBT News 2|https://sbtNews.maissbt.com/3.m3u8
-Normal|Live|News|TCM 10|https://live.tcm10.com.br/tcm10hd/stream.m3u8
-Normal|Live|News|TV Fronteira|https://tvfronteira.brasilstream.com.br/hls/tvfronteira/index.m3u8
 Normal|Live|Público|TV ALMG|https://streaming.almg.gov.br/live/tvalmg.m3u8
 Normal|Live|Público|TV Câmara|https://stream3.camara.gov.br/tv1/manifest.m3u8
 Normal|Live|Público|TV Câmara 2|https://stream3.camara.gov.br/tv1/manifest.m3u8
