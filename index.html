@@ -276,6 +276,33 @@
     function criarPlayer() {
       if (!videos.length) return;
       const video = videos[selecionado];
+      const area = document.getElementById("player");
+
+      // A CNN Brasil não oferece garantia de que a live_stream do YouTube
+      // esteja disponível para incorporação. Não carregue esse endpoint no iframe,
+      // pois ele pode devolver HTTP 403. Use a página oficial ao vivo.
+      if (video.id.startsWith("LIVECHANNEL:") &&
+          /cnn brasil/i.test(video.titulo)) {
+        const painel = document.createElement("div");
+        painel.style.cssText = "box-sizing:border-box;min-height:220px;padding:28px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;background:#111;color:#fff;border-radius:8px";
+        const titulo = document.createElement("h2");
+        titulo.textContent = "CNN Brasil — transmissão ao vivo";
+        titulo.style.cssText = "margin:0;font-size:1.35rem";
+        const aviso = document.createElement("p");
+        aviso.textContent = "Para evitar o erro 403, abra a transmissão diretamente na página oficial da CNN Brasil.";
+        aviso.style.cssText = "max-width:560px;margin:0;line-height:1.5";
+        const link = document.createElement("a");
+        link.href = "https://www.cnnbrasil.com.br/ao-vivo/";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = "Assistir CNN Brasil ao vivo";
+        link.style.cssText = "display:inline-block;background:#d40000;color:#fff;padding:12px 18px;border-radius:6px;text-decoration:none;font-weight:700";
+        painel.append(titulo, aviso, link);
+        area.replaceChildren(painel);
+        player = null;
+        return;
+      }
+
       const iframe = document.createElement("iframe");
       iframe.title = video.titulo;
       if (video.id.startsWith("LIVECHANNEL:")) {
@@ -287,7 +314,6 @@
       iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
       iframe.allowFullscreen = true;
       iframe.referrerPolicy = "strict-origin-when-cross-origin";
-      const area = document.getElementById("player");
       area.replaceChildren(iframe);
       player = iframe;
     }
