@@ -3,22 +3,24 @@
 # Exemplos de temas: Pregações, Estudos Bíblicos, Música, Notícias, Lives
 # Linhas iniciadas com # são ignoradas.
 #
-# Para criar outro vídeo, copie este formato:
-# Pregações|Nome do vídeo|https://www.youtube.com/watch?v=ID_DO_VIDEO
+# Tema|Categoria|Classificação|Episódio/Título|URL
+# Normal|Live|Notícias|CNN Brasil|https://www.youtube.com/watch?v=ID_DO_VIDEO
+# Religioso|Series|Temporada 1|Episódio 1|https://www.youtube.com/watch?v=ID_DO_VIDEO
+# Infantil|Filmes|Animação|Aventura infantil|https://www.youtube.com/watch?v=ID_DO_VIDEO
 
 #NEWS
-Notícias|CNN Brasil|https://www.youtube.com/@CNNbrasil/live
-Notícias|Jovem Pan|https://www.youtube.com/@jovempannews/live
-Notícias|Record News|https://www.youtube.com/@recordnews/live
-Notícias|SBT News|https://www.youtube.com/@SBTNews/live
-Notícias|CNN Brasil 2|https://www.youtube.com/watch?v=z656hCZN3oc
-Notícias|Jovem Pan 2|https://www.youtube.com/live/eTz4XgOQaAE
-Notícias|Record News 2|https://www.youtube.com/watch?v=XEw29TBkPhI
-Notícias|SBT News 2|https://www.youtube.com/watch?v=hIZO264s_R8
+Normal|Live|Notícias|CNN Brasil|https://www.youtube.com/@CNNbrasil/live
+Normal|Live|Notícias|Jovem Pan|https://www.youtube.com/@jovempannews/live
+Normal|Live|Notícias|Record News|https://www.youtube.com/@recordnews/live
+Normal|Live|Notícias|SBT News|https://www.youtube.com/@SBTNews/live
+Normal|Live|Notícias|CNN Brasil 2|https://www.youtube.com/watch?v=z656hCZN3oc
+Normal|Live|Notícias|Jovem Pan 2|https://www.youtube.com/live/eTz4XgOQaAE
+Normal|Live|Notícias|Record News 2|https://www.youtube.com/watch?v=XEw29TBkPhI
+Normal|Live|Notícias|SBT News 2|https://www.youtube.com/watch?v=hIZO264s_R8
 
-Estudos Bíblicos|APOCALIPSE SE CUMPRIR? Rodrigo Silva|https://www.youtube.com/watch?v=esh6wXrLJ2s
-Estudos Bíblicos|A IGREJA NOS DIAS ATUAIS|https://www.youtube.com/watch?v=jYVOCVqiz2c
-Música|Canal de música|https://www.youtube.com/watch?v=M7lc1UVf-VE
-Geral|Vídeo de exemplo|https://youtu.be/aqz-KE-bpKQ
-Música e Lives|Rádio / transmissão ao vivo|https://www.youtube.com/watch?v=jfKfPfyJRdk
+Religioso|Series|Rodrigo Silva|Estudos Bíblicos|APOCALIPSE SE CUMPRIR? Rodrigo Silva|https://www.youtube.com/watch?v=esh6wXrLJ2s
+Religioso|Series|Rodrigo Silva|A IGREJA NOS DIAS ATUAIS|https://www.youtube.com/watch?v=jYVOCVqiz2c
+Música|Series|Music1|Canal de música|https://www.youtube.com/watch?v=M7lc1UVf-VE
+Música|Series|Music1|Vídeo de exemplo|https://youtu.be/aqz-KE-bpKQ
+Música|Series|Music1|Rádio / transmissão ao vivo|https://www.youtube.com/watch?v=jfKfPfyJRdk
 
