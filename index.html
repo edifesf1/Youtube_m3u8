@@ -137,6 +137,12 @@
 
   <main>
     <div id="player"></div>
+    <p style="margin:10px 0">
+      <a href="https://www.cnnbrasil.com.br/ao-vivo/" target="_blank" rel="noopener noreferrer"
+         style="display:inline-block;background:#c00;color:#fff;padding:10px 14px;border-radius:6px;text-decoration:none;font-weight:bold">
+        Abrir CNN Brasil ao vivo no site oficial
+      </a>
+    </p>
     <div id="status">Carregando lista de vídeos...</div>
     <div id="lista"></div>
   </main>
@@ -340,7 +346,11 @@
         lista.appendChild(botao);
       });
 
-      selecionarVideo(0);
+      const cnnIndex = videos.findIndex(video =>
+        /cnn brasil ao vivo/i.test(video.titulo) ||
+        video.id === "LIVECHANNEL:UCvdwhh_fDyWccR42-rReZLw"
+      );
+      selecionarVideo(cnnIndex >= 0 ? cnnIndex : 0);
       status.textContent = "Tema: " + (temaEscolhido === "Todos" ? "Todos os vídeos" : temaEscolhido)
         + " — " + videos.length + " vídeo(s).";
       criarPlayer();
@@ -352,9 +362,10 @@
         if (!resposta.ok) throw new Error("HTTP " + resposta.status);
         const texto = await resposta.text();
 
-        todosVideos = texto.split(/\r?\n/)
+        const linhasUnicas = [...new Set(texto.split(/\r?\n/)
           .map(linha => linha.trim())
-          .filter(linha => linha && !linha.startsWith("#"))
+          .filter(linha => linha && !linha.startsWith("#")))];
+        todosVideos = linhasUnicas
           .map((linha, indice) => {
             const partes = linha.split("|").map(parte => parte.trim());
             let tema, titulo, url;

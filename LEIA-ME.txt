@@ -34,3 +34,7 @@ O site agora solicita um dos 200 códigos do arquivo `LOGINS-200.txt`. Não é n
 
 
 ATUALIZAR LOGIN: os códigos são lidos de LOGINS-200.txt em cada abertura do site. Edite esse arquivo, um login por linha (YT + 8 letras/números), e faça commit no GitHub. Para os vídeos, edite youtube.txt e faça commit; o site lê esse arquivo novamente ao abrir.
+
+
+## CNN Brasil ao vivo
+A página inicia priorizando a CNN Brasil quando a categoria contém a transmissão. Foi adicionado um botão para abrir a página oficial https://www.cnnbrasil.com.br/ao-vivo/ caso o YouTube não permita reprodução incorporada. Um erro 403 do servidor do YouTube não pode ser corrigido apenas pelo HTML; nesse caso use a página oficial.
