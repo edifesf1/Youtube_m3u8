@@ -34,3 +34,9 @@ O site agora solicita um dos 200 códigos do arquivo `LOGINS-200.txt`. Não é n
 
 
 ATUALIZAR LOGIN: os códigos são lidos de LOGINS-200.txt em cada abertura do site. Edite esse arquivo, um login por linha (YT + 8 letras/números), e faça commit no GitHub. Para os vídeos, edite youtube.txt e faça commit; o site lê esse arquivo novamente ao abrir.
+
+
+LINKS HLS (.m3u8)
+O site agora aceita links diretos .m3u8 no mesmo formato de cinco campos do youtube.txt. Exemplo:
+Normal|Live|Notícias|Band PA|https://servidor/exemplo/playlist.m3u8
+A reprodução depende de o endereço estar ativo e o servidor permitir acesso do navegador (CORS).
