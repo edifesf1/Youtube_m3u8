@@ -7,11 +7,36 @@
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; background: #111; color: #fff; font-family: Arial, sans-serif; }
+    
     header {
-      display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px;
-      background: #c00; padding: 10px 16px; min-height: 60px;
-      position: sticky; top: 0; z-index: 8;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      background: #c00;
+      padding: 10px 16px;
+      min-height: 60px;
+    
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+    
+      transform: translateY(-110%);
+      transition: transform 0.18s ease;
     }
+    
+    /* Mostrar a tarja */
+    header.tarja-visivel {
+      transform: translateY(0);
+    }
+    
+    /* Manter a tarja visível enquanto o usuário interage com ela */
+    header.tarja-visivel:focus-within {
+      transform: translateY(0);
+    }
+
     #temaAtual { display: none; }
     main { max-width: 1000px; margin: auto; padding: 16px; }
     /* O player acompanha o fluxo da página para não cobrir a tarja vermelha. */
@@ -160,6 +185,58 @@
 
   <script>
 
+    const tarja = document.querySelector("header");
+    let temporizadorTarja = null;
+    
+    function mostrarTarja() {
+      if (document.body.classList.contains("bloqueado")) return;
+    
+      tarja.classList.add("tarja-visivel");
+    
+      clearTimeout(temporizadorTarja);
+    
+      temporizadorTarja = setTimeout(() => {
+        // Não esconder enquanto o usuário estiver usando os menus.
+        if (!tarja.matches(":focus-within")) {
+          tarja.classList.remove("tarja-visivel");
+        }
+      }, 1000);
+    }
+    
+    function ocultarTarja() {
+      clearTimeout(temporizadorTarja);
+    
+      if (!tarja.matches(":focus-within")) {
+        tarja.classList.remove("tarja-visivel");
+      }
+    }
+    
+    // Mouse: aparece ao movimentar o ponteiro.
+    document.addEventListener("mousemove", mostrarTarja, { passive: true });
+    
+    // Celulares e telas sensíveis ao toque.
+    document.addEventListener("touchstart", mostrarTarja, { passive: true });
+    
+    // Controles que enviam eventos de teclado.
+    document.addEventListener("keydown", mostrarTarja);
+    
+    // Se o mouse sair da página, iniciar a contagem para ocultar.
+    document.addEventListener("mouseleave", ocultarTarja);
+    
+    // Ao selecionar um menu, manter a tarja visível durante o uso.
+    tarja.addEventListener("focusin", () => {
+      clearTimeout(temporizadorTarja);
+      tarja.classList.add("tarja-visivel");
+    });
+    
+    tarja.addEventListener("focusout", () => {
+      setTimeout(() => {
+        if (!tarja.matches(":focus-within")) {
+          ocultarTarja();
+        }
+      }, 100);
+    });
+
     // A lista de logins é carregada diretamente de LOGINS-200.txt.
     // Assim, alterações nesse arquivo passam a valer sem editar o index.html.
     let LOGINS_VALIDOS = [];
@@ -188,11 +265,43 @@
       }
     }
 
-    function liberarAcesso(login) {
-      document.body.classList.remove("bloqueado");
-      telaLogin.style.display = "none";
-      sessionStorage.setItem("youtubeIptvLogin", login);
+
+    async function ativarTelaCheia() {
+      try {
+        if (!document.fullscreenElement &&
+            document.documentElement.requestFullscreen) {
+          await document.documentElement.requestFullscreen();
+        }
+      } catch (erro) {
+        console.warn("Tela cheia não autorizada pelo navegador:", erro);
+      }
     }
+    
+      function liberarAcesso(login) {
+        document.body.classList.remove("bloqueado");
+        telaLogin.style.display = "none";
+        sessionStorage.setItem("youtubeIptvLogin", login);
+      
+        // Tentar abrir em tela cheia após a entrada.
+        ativarTelaCheia();
+      
+        // Começar com a tarja escondida.
+        tarja.classList.remove("tarja-visivel");
+        clearTimeout(temporizadorTarja);
+      }
+
+    document.addEventListener("click", function ativarTelaCheiaNoClique() {
+      if (!document.fullscreenElement) {
+        ativarTelaCheia();
+      }
+    });
+    
+    document.addEventListener("touchend", function ativarTelaCheiaNoToque() {
+      if (!document.fullscreenElement) {
+        ativarTelaCheia();
+      }
+    }, { passive: true });
+
     function validarLoginSalvo() {
       const salvo = sessionStorage.getItem("youtubeIptvLogin");
       if (salvo && LOGINS_VALIDOS.includes(salvo)) liberarAcesso(salvo);
