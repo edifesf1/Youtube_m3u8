@@ -24,7 +24,7 @@
       z-index: 100;
     
       transform: translateY(-110%);
-      transition: transform 0.18s ease;
+      transition: transform 0.10s linear;
     }
     
     /* Mostrar a tarja */
@@ -188,6 +188,7 @@
     const tarja = document.querySelector("header");
     let temporizadorTarja = null;
     
+    
     function mostrarTarja() {
       if (document.body.classList.contains("bloqueado")) return;
     
@@ -196,12 +197,15 @@
       clearTimeout(temporizadorTarja);
     
       temporizadorTarja = setTimeout(() => {
-        // Não esconder enquanto o usuário estiver usando os menus.
-        if (!tarja.matches(":focus-within")) {
-          tarja.classList.remove("tarja-visivel");
-        }
-      }, 1000);
+        tarja.classList.remove("tarja-visivel");
+      }, 250);
     }
+    
+    function ocultarTarja() {
+      clearTimeout(temporizadorTarja);
+      tarja.classList.remove("tarja-visivel");
+    }
+
     
     function ocultarTarja() {
       clearTimeout(temporizadorTarja);
@@ -229,13 +233,13 @@
       tarja.classList.add("tarja-visivel");
     });
     
+    
     tarja.addEventListener("focusout", () => {
-      setTimeout(() => {
-        if (!tarja.matches(":focus-within")) {
-          ocultarTarja();
-        }
-      }, 100);
+      if (!tarja.matches(":focus-within")) {
+        ocultarTarja();
+      }
     });
+
 
     // A lista de logins é carregada diretamente de LOGINS-200.txt.
     // Assim, alterações nesse arquivo passam a valer sem editar o index.html.
