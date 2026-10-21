@@ -382,7 +382,20 @@
     
       console.warn("Falha de canal registrada para envio:", registro);
     }
+    function testarLogAutomatico() {
+      registrarFalha(
+        {
+          titulo: "TESTE AUTOMÁTICO DO SITE",
+          url: "https://exemplo.com/canal-teste.m3u8"
+        },
+        "TESTE",
+        "Teste de envio pelo navegador",
+        "TESTE-002"
+      );
     
+      status.textContent =
+        "Teste enviado. Confira a planilha LOG_CANAIS.";
+    }
     function carregarYouTubeAPI() {
       if (window.YT && window.YT.Player) {
         return Promise.resolve();
