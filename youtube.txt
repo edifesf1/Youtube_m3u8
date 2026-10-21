@@ -5,12 +5,12 @@
 
 #Notícias
 Normal|Normal|Live|Notícias|CNN Brasil Normal|https://www.youtube.com/live/6u0neDhIKEw
-Normal|Normal|Live|Notícias|Jovem Pan|https://www.youtube.com/live/iE0xOjrTuVM
+Normal|Normal|Live|Notícias|Jovem Pan|https://www.youtube.com/live/k_3MiAI-Ifo
 Normal|Normal|Live|Notícias|Record News|https://www.youtube.com/live/CHUZ0hjRrdI
 Normal|Live|Notícias|BAND News|https://www.youtube.com/live/y-hyJDBWOtU
-Normal|Live|Notícias|CNN Brasil|https://www.youtube.com/live/0O8gRb6eCQk
+Normal|Live|Notícias|CNN Brasil|https://www.youtube.com/live/c1C3Wm7E288
 Normal|Live|Notícias|Record News 2|https://rnw-rn.otteravision.com/rnw/rn/rnw_rn.m3u8
-Normal|Live|Notícias|SBT News|https://www.youtube.com/live/8L_K9RY7HB4
+Normal|Live|Notícias|SBT News|https://www.youtube.com/live/GjhySRFh_ok
 Normal|Live|Notícias|Veja +|https://gpa-vja.otteravision.com/gpa/vja/vja.m3u8
 Normal|Live|Notícias|J3News TV|https://video01.brascast.com/d92ebb4f/d92ebb4f/playlist.m3u8
 Normal|Live|Notícias|JovemPan - Cidade Verde|https://televisaocidadeverde.brasilstream.com.br/hls/televisaocidadeverde/index.m3u8
