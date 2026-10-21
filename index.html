@@ -324,11 +324,105 @@
     });
     carregarLogins();
 
+    
+    const URL_LOG = "https://script.google.com/macros/s/AKfycbyXwVtr-pZu4Ee4cbeH2iQfFD7j2XDP1zq8swofZPGrLt8azs0Kbf7CCJnIPx-4RIQatA/exec";
+    
     let todosVideos = [];
     let videos = [];
     let player = null;
     let hlsInstance = null;
     let selecionado = 0;
+    
+    let ytPlayerApi = null;
+    let geracaoPlayer = 0;
+    let ytApiPromise = null;
+    
+    const falhasRecentes = new Map();
+    
+    function registrarFalha(item, tipo, erro, codigo = "") {
+      if (!item || !item.url) return;
+    
+      const mensagem = String(erro || "Falha de reprodução").slice(0, 1000);
+      const chave = [item.url, tipo, codigo, mensagem].join("|");
+      const agora = Date.now();
+      const ultima = falhasRecentes.get(chave);
+    
+      // Evita duplicar o mesmo erro em um intervalo de 60 segundos.
+      if (ultima && agora - ultima < 60000) return;
+    
+      falhasRecentes.set(chave, agora);
+    
+      // Limita o tamanho do controle de duplicidade.
+      if (falhasRecentes.size > 200) {
+        for (const [k, tempo] of falhasRecentes) {
+          if (agora - tempo > 60000) falhasRecentes.delete(k);
+        }
+      }
+    
+      const registro = {
+        canal: item.titulo || "Canal sem nome",
+        tipo: tipo,
+        url: item.url,
+        erro: mensagem,
+        codigo: codigo ? String(codigo) : ""
+      };
+    
+      // O modo no-cors permite enviar o registro sem exigir
+      // que o navegador leia a resposta do Apps Script.
+      fetch(URL_LOG, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "text/plain;charset=UTF-8"
+        },
+        body: JSON.stringify(registro)
+      }).catch(err => {
+        console.error("Não foi possível enviar o log:", err);
+      });
+    
+      console.warn("Falha de canal registrada para envio:", registro);
+    }
+    
+    function carregarYouTubeAPI() {
+      if (window.YT && window.YT.Player) {
+        return Promise.resolve();
+      }
+    
+      if (ytApiPromise) return ytApiPromise;
+    
+      ytApiPromise = new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          reject(new Error("Tempo esgotado ao carregar a API do YouTube"));
+        }, 15000);
+    
+        const callbackAnterior = window.onYouTubeIframeAPIReady;
+    
+        window.onYouTubeIframeAPIReady = () => {
+          clearTimeout(timeout);
+          if (typeof callbackAnterior === "function") {
+            callbackAnterior();
+          }
+          resolve();
+        };
+    
+        let script = document.querySelector(
+          'script[src="https://www.youtube.com/iframe_api"]'
+        );
+    
+        if (!script) {
+          script = document.createElement("script");
+          script.src = "https://www.youtube.com/iframe_api";
+          script.onerror = () => {
+            clearTimeout(timeout);
+            reject(new Error("Falha ao carregar a API do YouTube"));
+          };
+          document.head.appendChild(script);
+        }
+      });
+    
+      return ytApiPromise;
+    }
+
 
     const status = document.getElementById("status");
     const lista = document.getElementById("lista");
@@ -455,6 +549,15 @@
       if (!videos.length) return;
       const item = videos[selecionado];
       const area = document.getElementById("player");
+      const geracao = ++geracaoPlayer;
+
+      if (ytPlayerApi) {
+        try {
+          ytPlayerApi.destroy();
+        } catch (_) {}
+      
+        ytPlayerApi = null;
+      }
       if (hlsInstance) {
         try { hlsInstance.destroy(); } catch (_) {}
         hlsInstance = null;
@@ -539,6 +642,16 @@
               url: data.url,
               error: data.error?.message
             });
+            
+            if (data.fatal) {
+              registrarFalha(
+                item,
+                "M3U8/HLS",
+                data.details || data.error?.message || "Erro HLS fatal",
+                data.response?.code || data.details || ""
+              );
+            }
+
             if (!data.fatal) return;
 
             // Recupera falhas de rede/mídia quando hls.js permite. Isso não
@@ -563,14 +676,92 @@
         return;
       }
 
-      const iframe = document.createElement("iframe");
-      iframe.title = item.titulo;
-      iframe.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(item.id) + "?autoplay=1&playsinline=1&rel=0";
-      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-      iframe.allowFullscreen = true;
-      iframe.referrerPolicy = "strict-origin-when-cross-origin";
-      area.appendChild(iframe);
-      player = iframe;
+     
+      const container = document.createElement("div");
+      container.id = "youtube-player-container";
+      container.style.cssText =
+        "width:100%;height:100%;background:#000;";
+      area.appendChild(container);
+
+      status.textContent = "Carregando player do YouTube…";
+
+      carregarYouTubeAPI()
+        .then(() => {
+          // Impede que um player antigo seja criado depois
+          // que o usuário já trocou de canal.
+          if (
+            geracao !== geracaoPlayer ||
+            !area.contains(container)
+          ) return;
+
+          ytPlayerApi = new YT.Player(container.id, {
+            width: "100%",
+            height: "100%",
+            videoId: item.id,
+            playerVars: {
+              autoplay: 1,
+              playsinline: 1,
+              rel: 0,
+              enablejsapi: 1,
+              origin: location.origin
+            },
+            events: {
+              onReady: (event) => {
+                status.textContent =
+                  "Player do YouTube carregado.";
+
+                event.target.playVideo();
+              },
+
+              onStateChange: (event) => {
+                if (event.data === YT.PlayerState.PLAYING) {
+                  status.textContent = "Reproduzindo: " + item.titulo;
+                }
+              },
+
+              onError: (event) => {
+                const mensagens = {
+                  2: "Parâmetro ou ID de vídeo inválido",
+                  5: "Erro no player HTML5 do YouTube",
+                  100: "Vídeo removido, privado ou não encontrado",
+                  101: "Vídeo não permite reprodução incorporada",
+                  150: "Vídeo não permite reprodução incorporada",
+                  153: "Erro de identificação do player ou Referer"
+                };
+
+                const mensagem =
+                  mensagens[event.data] ||
+                  "Erro informado pelo player do YouTube";
+
+                status.textContent =
+                  "Falha no canal: " + item.titulo +
+                  ". Código " + event.data;
+
+                registrarFalha(
+                  item,
+                  "YouTube",
+                  mensagem,
+                  event.data
+                );
+              }
+            }
+          });
+
+          player = ytPlayerApi;
+        })
+        .catch((erro) => {
+          if (geracao !== geracaoPlayer) return;
+
+          status.textContent =
+            "Não foi possível carregar o player do YouTube.";
+
+          registrarFalha(
+            item,
+            "YouTube",
+            erro.message || "Falha ao carregar a API do YouTube",
+            "API"
+          );
+        });
     }
 
     async function carregarLista() {
