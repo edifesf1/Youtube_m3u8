@@ -417,6 +417,6 @@ Series|Series|Música|Canal de música|https://www.youtube.com/watch?v=M7lc1UVf-
 
 
 
-Notícias|CNN Brasil Ao Vivo|https://www.youtube.com/watch?v=2jTXFR44bEs
+Notícias|CNN Brasil Ao Vivo|https://www.youtube.com/watch?v=CweCGmBunZM
 Notícias|BandNews Ao Vivo|https://www.youtube.com/@bandnewstv/live
-Notícias|SBT News Ao Vivo|https://www.youtube.com/watch?v=OIPEnvXLmY8
+Notícias|SBT News Ao Vivo|https://www.youtube.com/watch?v=iXpkcF8SMuQ
