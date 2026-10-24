@@ -6,16 +6,16 @@
 #Notícias
 Normal|Normal|Live|Notícias|CNN Brasil Normal|https://www.youtube.com/live/6u0neDhIKEw
 Normal|Normal|Live|Notícias|Jovem Pan|https://www.youtube.com/live/eTz4XgOQaAE
-Normal|Normal|Live|Notícias|Record News|https://www.youtube.com/live/xLt87-ZSEEI
+Normal|Normal|Live|Notícias|Record News|https://www.youtube.com/live/TCRFQXkZ8fs
 Normal|Live|Notícias|BAND News|https://www.youtube.com/live/y-hyJDBWOtU
-Normal|Live|Notícias|CNN Brasil|https://www.youtube.com/live/sSpdn-yyLNQ
+Normal|Live|Notícias|CNN Brasil|https://www.youtube.com/live/oBOlbh9VB3A
 Normal|Live|Notícias|Record News 2|https://rnw-rn.otteravision.com/rnw/rn/rnw_rn.m3u8
-Normal|Live|Notícias|SBT News|https://www.youtube.com/live/q45_X7SH-UQ
+Normal|Live|Notícias|SBT News|https://www.youtube.com/live/OIPEnvXLmY8
 Normal|Live|Notícias|Veja +|https://gpa-vja.otteravision.com/gpa/vja/vja.m3u8
 Normal|Live|Notícias|J3News TV|https://video01.brascast.com/d92ebb4f/d92ebb4f/playlist.m3u8
 Normal|Live|Notícias|JovemPan - Cidade Verde|https://televisaocidadeverde.brasilstream.com.br/hls/televisaocidadeverde/index.m3u8
 Normal|Live|Notícias|JovemPan 2|https://amg01391-amg01391c3-tcl-spain-5038.playouts.now.amagi.tv/playlist1080-p.m3u8
-Normal|Live|Notícias|Record News|https://www.youtube.com/live/xLt87-ZSEEI
+Normal|Live|Notícias|Record News|https://www.youtube.com/live/TCRFQXkZ8fs
 Normal|Live|Notícias|RS News|https://video07.logicahost.com.br/rsNews01/rsNews01/chunklist_w451977208.m3u8
 Normal|Live|Notícias|SBT News 2|https://sbtNews.maissbt.com/3.m3u8
 Normal|Live|Notícias|TCM 10|https://live.tcm10.com.br/tcm10hd/stream.m3u8
