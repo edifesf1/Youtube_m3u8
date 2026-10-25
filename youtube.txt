@@ -5,10 +5,10 @@
 
 #Notícias
 Normal|Normal|Live|Notícias|CNN Brasil Normal|https://www.youtube.com/live/6u0neDhIKEw
-Normal|Normal|Live|Notícias|Jovem Pan|https://www.youtube.com/live/W1pXwK-tBm8
+Normal|Normal|Live|Notícias|Jovem Pan|https://www.youtube.com/live/eTz4XgOQaAE
 Normal|Normal|Live|Notícias|Record News|https://www.youtube.com/live/TCRFQXkZ8fs
 Normal|Live|Notícias|BAND News|https://www.youtube.com/live/y-hyJDBWOtU
-Normal|Live|Notícias|CNN Brasil|https://www.youtube.com/live/yRJJ0B1n_D8
+Normal|Live|Notícias|CNN Brasil|https://www.youtube.com/live/PT1elxQmzqg
 Normal|Live|Notícias|Record News 2|https://rnw-rn.otteravision.com/rnw/rn/rnw_rn.m3u8
 Normal|Live|Notícias|SBT News|https://www.youtube.com/live/J8ZRQpbPffc
 Normal|Live|Notícias|Veja +|https://gpa-vja.otteravision.com/gpa/vja/vja.m3u8
