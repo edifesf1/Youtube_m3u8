@@ -609,9 +609,10 @@
 
         // Parâmetros para testar a ocultação dos controles.
         restreamUrl.searchParams.set("controls", "false");
-        restreamUrl.searchParams.set("muted", "false");
-        restreamUrl.searchParams.set("mute", "false");
-        restreamUrl.searchParams.set("volume", "0.5");
+
+        // O SEGREDO ESTÁ AQUI: Isso força o navegador a liberar o áudio do player incorporado
+        iframe.setAttribute("allow", "autoplay; encrypted-media");
+        iframe.setAttribute("allowfullscreen", "true");
 
         iframe.title = item.titulo;
         iframe.src = restreamUrl.toString();
